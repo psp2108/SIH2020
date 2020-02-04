@@ -1,3 +1,8 @@
 card {
-    
-} 
+    box-shadow: black 2px 2px 2px;
+}
+top-bar{
+    background-color: blue;
+    height: 10px;
+    width: 20px;
+}
