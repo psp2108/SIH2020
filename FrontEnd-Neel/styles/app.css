@@ -85,14 +85,15 @@
 /* dynamic--------------------- */
 
 /* bottom-bar------------------ */
+/* top-bar--------------------- */
 .bottom-bar{
     position: fixed;
-    left: 0;
-    bottom: 0;
+    bottom:0;
     background: #00c6ff;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     height: 40px;
+    width: 397px;
 }
 .bottom-bar img{
     height: 25px;
@@ -107,6 +108,14 @@
     display: block;
     position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
+}
+.sticky-bottom {
+    border-radius: 4px;
+    display: block;
+    position: fixed;
+    bottom: 0;
     left: 0;
     width: 100%;
 }
