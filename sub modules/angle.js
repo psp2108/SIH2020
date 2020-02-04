@@ -1,6 +1,6 @@
 var getAngle = function(line, refAngle){
     /*
-        {
+        line = {
             p1: {
                 x: 1,
                 y: 2
@@ -14,11 +14,9 @@ var getAngle = function(line, refAngle){
     */
     console.log(line.p2.x - line.p1.x)
     if(line.p2.x - line.p1.x == 0){
-        console.log("sfsd")
         return 90;
     }
     else{
-        console.log("QQQ")
         var slop = (line.p2.y - line.p1.y) / (line.p2.x - line.p1.x)
         // console.log(slop)
         var angle = Math.atan(slop) * 180 / Math.PI;
