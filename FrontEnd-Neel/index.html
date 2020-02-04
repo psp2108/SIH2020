@@ -10,12 +10,17 @@
         <!-- GENERAL INCLUDES -->
     </head>
     <body>
+
+        <!--Logo Bar Section Start-->
         <div class="card top-bar" id="navbar">
             <center>
                 <img src="images/favicon.png">
                 <h1>INA</h1>
             </center>
         </div>
+        <!--Logo Bar Section End--->
+    
+        <!--Instruction Section Start-->
         <div class="card instructions">
             <center>
                 <table>
@@ -56,31 +61,60 @@
                 </table>
             </center>
         </div>
+        <!--Instruction Section End---->
+
         <!--Dynamic Section Start-->
         <div class="card dynamic-section">
-            <table border="1">
+            <table border="0">
                 <tr class="section-title">
-                    <td>Dynamic Title</td>
+                    <td>Dynamic Title<hr></td>
                 </tr>
-                <tr>
-                    <td>Dynamic Title</td>
+                <tr class="section-body">
+                    <td>
+                        <center>
+                            Dynamic Section Body
+                        </center>
+                    </td>
                 </tr>
             </table>
         </div>
         <!--Dynamic Section End---->
+
+        <!--Footer Section Start-->
+        <div class="card bottom-bar" id="navbar">
+            <center>
+                <img src="images/favicon.png" style="margin-top: 5px;">
+            </center>
+        </div>
+        <!--Footer Section End--->
+
         <script>
             window.onscroll = function() {myFunction()};
             
-            var navbar = document.getElementById("navbar");
+                var navbar = document.getElementById("navbar");
+                var sticky = navbar.offsetTop;
+                
+                function myFunction() {
+                if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky")
+                } else {
+                    navbar.classList.remove("sticky");
+                }
+            }
+
+            window.onscroll = function() {myFunction()};
+            
+            var navbar = document.getElementById("bottom");
             var sticky = navbar.offsetTop;
             
             function myFunction() {
               if (window.pageYOffset >= sticky) {
-                navbar.classList.add("sticky")
+                navbar.classList.add("sticky-bottom")
               } else {
-                navbar.classList.remove("sticky");
+                navbar.classList.remove("sticky-bottom");
               }
             }
         </script>
+
     </body>
 </html>
