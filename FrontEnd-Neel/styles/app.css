@@ -28,28 +28,56 @@
 
 /* instruction----------------- */
 .instructions{
-    background: #00c6ff;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
+    background: #606c88;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3f4c6b, #606c88);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #3f4c6b, #606c88); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}    
 .instructions h2{
     color: whitesmoke;
 }
 .instructions table{
-    width: 70%;
+    width: 100%;
 }
-.instructions .number{
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 14px;
+.number{
+    text-align: center;
     color: white;
     border-radius: 100px;
-    background: #141E30;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #141E30;    
+}
+.inst{
+    color: whitesmoke;
+    padding-left: 8px;
+    font-weight: 800;
+}
+.partition{
+    font-size: 18px;
+    border-right: double;
+    text-align: right;
+    margin-right: 5px;
+    padding-right: 5px;
 }
 /* instruction----------------- */
 
+/* top-bar--------------------- */
+.dynamic-section{
+    background: #E0EAFC;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 40px;
+}
+.dynamic-section img{
+    height: 25px;
+    width: 25px;
+    display: inline;
+}
+.dynamic-section h1{
+    color: whitesmoke;
+    display: inline;
+}
+/* top-bar--------------------- */
 
 /* Making Nav Stick ----------- */
 .sticky {
