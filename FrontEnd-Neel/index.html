@@ -4,19 +4,63 @@
         <!-- GENERAL INCLUDES -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="icon" href="images/favicon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="styles/app.css">
         <!-- GENERAL INCLUDES -->
     </head>
     <body>
-        <div class="card top-bar">
-            
+        <div class="card top-bar" id="navbar">
+            <center>
+                <img src="images/favicon.png">
+                <h1>INA</h1>
+            </center>
         </div>
         <div class="card instructions">
-
+            <center>
+                <table border="1">
+                        <col width="10%">
+                        <col width="90%">
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                Scan QR Code
+                                <i class="fa fa-qrcode"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>
+                                Select Sub-Destination
+                                &#x1F4CD;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>
+                                Route
+                                &#10160;
+                            </td>
+                        </tr>
+                </table>
+            </center>
         </div>
         <div class="card updating-section">
 
         </div>
+        <script>
+            window.onscroll = function() {myFunction()};
+            
+            var navbar = document.getElementById("navbar");
+            var sticky = navbar.offsetTop;
+            
+            function myFunction() {
+              if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+              } else {
+                navbar.classList.remove("sticky");
+              }
+            }
+        </script>
     </body>
 </html>
