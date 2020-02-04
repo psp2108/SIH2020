@@ -12,7 +12,6 @@ var getAngle = function(line, refAngle){
 
         }
     */
-    console.log(line.p2.x - line.p1.x)
     if(line.p2.x - line.p1.x == 0){
         if(line.p1.y < line.p2.y){
             return 90;
@@ -45,20 +44,22 @@ var getAngle = function(line, refAngle){
             }
         }
 
-        return angle == 360 ? 0 : angle;
+        //Bias
+        angle += refAngle;
+        return angle >= 360 ? angle - 360 : angle;
     }
 }
 
 
 var line = {
     p1: {
-        x: 5,
-        y: -4
+        x: 0,
+        y: 0
     },
     p2: {
-        x: 3,
-        y: 4
+        x: -500,
+        y: -0.1
     }
 }
 
-console.log("Angle: "+getAngle(line,23))
+console.log("Angle: "+getAngle(line,39));
