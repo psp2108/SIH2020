@@ -1,1 +1,1 @@
-<?php echo "1234"?>
+<?php echo $_POST['QRid']?>
