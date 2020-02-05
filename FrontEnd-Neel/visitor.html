@@ -7,6 +7,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="icon" href="images/favicon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="styles/app.css">
+        <link rel="stylesheet" href="styles/visitor.css">
+        <script type="text/javascript" src="scripts/sticky.js"></script>
+        <script type="text/javascript" src="scripts/visitor/my_qrcode.js"></script>
         <!-- GENERAL INCLUDES -->
     </head>
     <body>
@@ -67,12 +70,19 @@
         <div class="card dynamic-section">
             <table border="0">
                 <tr class="section-title" id="section-title-id">
-                    <td>Dynamic Title<hr></td>
+                    <td>Scan QR Code<hr></td>
                 </tr>
                 <tr class="section-body" id="section-body-id">
                     <td>
                         <center>
-                            Dynamic Section Body
+                            <!--QR Code Canvas-->
+                            <div class="qr-scanner">
+                                <div class="video-container" id="qr-scanner-id">
+                                    <video id="video-preview" class="fit-to-div"></video>
+                                    <canvas id="qr-canvas" class="hidden" style="display: none;"></canvas>
+                                </div>
+                            </div>
+                            <!--QR Code Canvas-->
                         </center>
                     </td>
                 </tr>
@@ -90,25 +100,6 @@
 
         <script>
             window.onscroll = function() {myFunction()};
-            
-            function myFunction() {
-                // For Nav Bar
-                var navbar = document.getElementById("navbar");
-                var sticky = navbar.offsetTop;
-                // For Bottom Bar
-                bottombar = document.getElementById("bottombar");
-                sticky2 = bottombar.offsetTop;
-
-                if (window.pageYOffset >= sticky) {
-                    navbar.classList.add("sticky");
-                    bottombar.classList.add("sticky-bottom");
-                } else {
-                    navbar.classList.remove("sticky");
-                    bottombar.classList.remove("sticky-bottom");
-                }
-            }
-        
-            
         </script>
     </body>
 </html>
