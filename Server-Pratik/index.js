@@ -147,7 +147,7 @@ app.get('/getBuilding/:id', function(req, res){
             }
         ]
     };
-    res.send(data);
+    res.json(data);
 });
 
 app.listen(port);
