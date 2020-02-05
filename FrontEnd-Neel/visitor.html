@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <title>INA &#8627; Home</title>
+        <!-- GENERAL INCLUDES -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" href="images/favicon.png" type="image/gif" sizes="16x16">
+        <link rel="stylesheet" href="styles/app.css">
+        <!-- GENERAL INCLUDES -->
+    </head>
+    <body>
+
+        <!--Logo Bar Section Start-->
+        <div class="card top-bar" id="navbar">
+            <center>
+                <img src="images/favicon.png">
+                <h1>INA</h1>
+            </center>
+        </div>
+        <!--Logo Bar Section End--->
+    
+        <!--Instruction Section Start-->
+        <div class="card instructions">
+            <center>
+                <table>
+                    <col width="28%">
+                    <col width="72%">
+                    <tr>
+                        <td class="inst partition">
+                            Steps<br>To<br>Follow
+                        </td>
+                        <td>
+                            <table border="0">
+                                <col width="10%">
+                                <col width="90%">
+                                <tr>
+                                    <td class="number">1</td>
+                                    <td class="inst">
+                                        Scan QR Code
+                                        <i class="fa fa-qrcode"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="number">2</td>
+                                    <td class="inst">
+                                        Select Sub-Destination
+                                        &#x1F4CD;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="number">3</td>
+                                    <td class="inst">
+                                        Route
+                                        &#10160;
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>    
+                </table>
+            </center>
+        </div>
+        <!--Instruction Section End---->
+
+        <!--Dynamic Section Start-->
+        <div class="card dynamic-section">
+            <table border="0">
+                <tr class="section-title" id="section-title-id">
+                    <td>Dynamic Title<hr></td>
+                </tr>
+                <tr class="section-body" id="section-body-id">
+                    <td>
+                        <center>
+                            Dynamic Section Body
+                        </center>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--Dynamic Section End---->
+
+        <!--Footer Section Start-->
+        <center>
+            <div class="card bottom-bar" id="bottombar">
+                <img src="images/favicon.png" style="margin-top: 5px;">
+            </div>
+        </center>
+        <!--Footer Section End--->
+
+        <script>
+            window.onscroll = function() {myFunction()};
+            
+            function myFunction() {
+                // For Nav Bar
+                var navbar = document.getElementById("navbar");
+                var sticky = navbar.offsetTop;
+                // For Bottom Bar
+                bottombar = document.getElementById("bottombar");
+                sticky2 = bottombar.offsetTop;
+
+                if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky");
+                    bottombar.classList.add("sticky-bottom");
+                } else {
+                    navbar.classList.remove("sticky");
+                    bottombar.classList.remove("sticky-bottom");
+                }
+            }
+        
+            
+        </script>
+    </body>
+</html>
