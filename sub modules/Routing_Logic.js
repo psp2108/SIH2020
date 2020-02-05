@@ -51,9 +51,17 @@ var getRoutingTable = function(adjMatrix, source){
         }
     }
 
+    var formatting = function(){
+        var routeTable = [];
+        for(var i=0; i<table.length; i++){
+            routeTable.push({"t":i,"p":table[i][1]});
+        }
+        return routeTable;
+    }
+
     initializeSingleSource(adjMatrix, source);
     djikstra(adjMatrix, source);
-    return table;
+    return formatting();
 }
 
 // var G = [ 
@@ -120,6 +128,4 @@ var G = [
     [inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,1,inf]
 ]
 t = getRoutingTable(G, 47);
-for(var i=0; i<t.length; i++){
-    console.log("Target:",i," | Parent:",t[i][1])
-}
+console.log(t)
