@@ -11,16 +11,17 @@
 <body>
     <form method="GET" action="test2.php">
         <input type="text" name="inp1">
-        <input type="submit">
+        <input type="button" id="sub">
     </form>
 <script>
-   $(document).ready(function(){
+   $("#sub").click(function(){
     $.ajax({
         type: "GET",
-        url: "http://localhost/sih/test2.php?inp1=fdfdf",
+        url: "../api/challenges/score_read.php",
         // dataType: 'json',
         success: function(data) {
-            alert(data);
+            var parsed = JSON.parse(data);
+            alert(parsed[0].name);
         },
         error: function (result) {
             alert("Err");
