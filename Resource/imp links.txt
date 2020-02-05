@@ -1,3 +1,9 @@
 PRATIK:
 nodejs express js methods including file uploads
 https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
+
+QR Related
+https://www.sitepoint.com/create-qr-code-reader-mobile-website/
+https://cirocosta.github.io/qcode-decoder/
+https://stackoverflow.com/questions/17652017/read-qrcode-from-a-web-page-with-camera/51166240
+https://github.com/LazarSoft/jsqrcode
