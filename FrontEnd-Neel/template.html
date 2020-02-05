@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="icon" href="images/favicon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="styles/app.css">
+        <script type="text/javascript" src="scripts/sticky.js"></script>
         <!-- GENERAL INCLUDES -->
     </head>
     <body>
@@ -72,7 +73,7 @@
                 <tr class="section-body">
                     <td>
                         <center>
-                            Dynamic Section Body
+                        	Dynamic Section Body
                         </center>
                     </td>
                 </tr>
@@ -90,23 +91,6 @@
 
         <script>
             window.onscroll = function() {myFunction()};
-            
-            function myFunction() {
-                // For Nav Bar
-                var navbar = document.getElementById("navbar");
-                var sticky = navbar.offsetTop;
-                // For Bottom Bar
-                bottombar = document.getElementById("bottombar");
-                sticky2 = bottombar.offsetTop;
-
-                if (window.pageYOffset >= sticky) {
-                    navbar.classList.add("sticky");
-                    bottombar.classList.add("sticky-bottom");
-                } else {
-                    navbar.classList.remove("sticky");
-                    bottombar.classList.remove("sticky-bottom");
-                }
-            }
         </script>
 
     </body>
