@@ -1,4 +1,6 @@
-<?php echo"Hello"?>
+<?php 
+    echo"Hello";
+?>
 
 <html>
 <head>
@@ -23,18 +25,18 @@ function sendQR(QRid)
        BRid += QRid[i];
        i++;
    }
-
-   alert(BRid)
+//    alert(BRid)
     $.ajax(
         {
             type: "GET",
-            url: "https://jsonplaceholder.typicode.com/posts",
-            dataType: "json",
-            data: {
-                     "BRid" : BRid
-                },
+            url: "http://localhost:3000/getBuilding/:123",
+            // url: "https://jsonplaceholder.typicode.com/posts",
+            // dataType: "json",
+            // data: {
+            //          "BRid" : BRid
+            //     },
             success: function(data) {
-                
+                console.log(data);
                 //var parsed = JSON.parse(data);
                 var parsed = data;             
                 alert(JSON.stringify(parsed));
@@ -45,6 +47,12 @@ function sendQR(QRid)
             },
         }
     );
+
+    // $.get("http://localhost:3000/getBuilding/:123", {number: 345} , function(data){
+    //     // Display the returned data in browser
+    //     console.log(data);
+    //     alert(JSON.stringify(data));
+    // });
     
 }
 
