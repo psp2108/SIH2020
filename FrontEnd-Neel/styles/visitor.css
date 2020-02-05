@@ -1,3 +1,18 @@
+/* GENERAL ----------------------------------*/
+
+/* GENERAL ----------------------------------*/
+
+/* INSTR STATUS -----------------------------*/
+.number-done{
+    text-align: center;
+    color: white;
+    border-radius: 100px;
+    background: #11998e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* STEP 1 CSS--------------------------------*/
 .qr-scanner{
     border: 1px;
     border-radius: 10px;
@@ -12,3 +27,10 @@
     width: 80%;
     margin: 4%;
 }
+/* STEP 1 CSS--------------------------------*/
+
+/* STEP 2 CSS--------------------------------*/
+.dest-selection{
+    display: none;
+}
+/* STEP 1 CSS--------------------------------*/
