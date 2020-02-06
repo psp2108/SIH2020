@@ -1,56 +1,45 @@
-var inf = 999999;
-var graph_matrix = [];
+// var inf = 999999;
+// var graph_matrix = [];
+//var graphRepresent = [];
 // var adj_matrix = [[],[]];
-var temp = {
-    "building":{
-        "no" : "",
-        "floorno" :""
-    },
-    "nodes" : {
-        "node0": {
-            "x" : 12,
-            "y" : 23,
-            "type": "QR"
-        },
-        "node1": {
-            "x" : 12,
-            "y" : 23,
-            "type": "QR"
-        },
-        "node2": {
-            "x" : 12,
-            "y" : 23,
-            "type": "QR"
-        },
-        "node3": {
-            "x" : 15,
-            "y" : 25,
-            "type": "Path"
-        }
-    },
+// var plottedData = {
+//     "building":{
+//         "no" : "",
+//         "floorno" :""
+//     },
+//     "nodes" : {
+//         "node0": {
+//             "x" : 12,
+//             "y" : 23,
+//             "type": "QR"
+//         },
+//         "node1": {
+//             "x" : 12,
+//             "y" : 23,
+//             "type": "QR"
+//         },
+//         "node2": {
+//             "x" : 12,
+//             "y" : 23,
+//             "type": "QR"
+//         },
+//         "node3": {
+//             "x" : 15,
+//             "y" : 25,
+//             "type": "Path"
+//         }
+//     },
 
-    "adj_matrix": [
-        [0,0,0,0],
-        [0,68,0,1],
-        [0,0,0,0],
-        [0,0,0,0]
-    ],
-    "ref_angle":45
-}
+//     "adj_matrix": [
+//         [0,0,0,0],
+//         [0,68,0,1],
+//         [0,1,0,0],
+//         [0,0,0,0]
+//     ],
+//     "ref_angle":45
+// }
 var getAngle = function(line, refAngle){
-    /*
-        line = {
-            p1: {
-                x: 1,
-                y: 2
-            },
-            p2: {
-                x: 3,
-                y: 3
-            }
-
-        }
-    */
+    
     if(line.p2.x - line.p1.x == 0){
         if(line.p1.y < line.p2.y){
             return 90;
@@ -88,29 +77,38 @@ var getAngle = function(line, refAngle){
         return angle >= 360 ? angle - 360 : angle;
     }
 }
-
-for(var i=0;i<temp.adj_matrix.length; i++){
-    graph_matrix.push([]);
-    for(var j=0;j<temp.adj_matrix.length;j++){
+var graphRepresent = function(plottedData){
+var inf = "-";
+var angleAdjMatrix = [];
+for(var i=0;i<plottedData.adj_matrix.length; i++){
+    angleAdjMatrix.push([]);
+    for(var j=0;j<plottedData.adj_matrix.length;j++){
         if(i==j){
-            graph_matrix[i].push(temp.adj_matrix[i][j]);
+            angleAdjMatrix[i].push(plottedData.adj_matrix[i][j]);
         }
-        else if(temp.adj_matrix[i][j] == 1){
+        else if(plottedData.adj_matrix[i][j] == 1){
             var line = {
-                p1 : temp.nodes["node"+i],
-                p2 : temp.nodes["node"+j]
+                p1 : plottedData.nodes["node"+i],
+                p2 : plottedData.nodes["node"+j]
             }
-            graph_matrix[i].push(getAngle(line, temp.ref_angle));
+            angleAdjMatrix[i].push(getAngle(line, plottedData.ref_angle));
         }
         else{
-            graph_matrix[i].push(inf);
+            angleAdjMatrix[i].push(inf);
         }
         
     }
 }
 
-for(var i=0;i<graph_matrix.length;i++){
-    for(var j=0;j<graph_matrix.length;j++){
-        console.log(graph_matrix[i][j]);
+// for(var i=0;i<graph_matrix.length;i++){
+//     for(var j=0;j<graph_matrix.length;j++){
+//         console.log(graph_matrix[i][j]);
+//     }
+// }
+for(var i=0;i<angleAdjMatrix.length;i++){
+    for(var j=0;j<angleAdjMatrix.length;j++){
+        plottedData.adj_matrix[i][j] = angleAdjMatrix[i][j];
     }
+}
+console.log("The adjacency matrix is :-",plottedData.adj_matrix);
 }
