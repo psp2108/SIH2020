@@ -1,9 +1,8 @@
 require("dotenv").config();
-var http = require('http'); 
-var port = process.env['SIH_PORT'] || 3000;
-
 const express = require('express');
 const app = express();
+
+var port = process.env['SIH_PORT'] || 3000;
 
 
 app.use(function(req, res, next) {
@@ -160,14 +159,14 @@ app.get('/getBuilding/:id', function(req, res){
     res.status(200).json(data);
 });
 
-app.post('/regBuilding',function(req, res){
+// app.post('/regBuilding',function(req, res){
 
 
-});
+// });
 
-app.post('/setMap',function(req, res){
+// app.post('/setMap',function(req, res){
 
-});
+// });
 
 
 app.listen(port);
