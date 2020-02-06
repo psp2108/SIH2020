@@ -45,7 +45,7 @@ var cl = function(binStrin){
     var o = {
         "qr-id" :  qrid,
         "building-id" : qrid.slice(0,5),
-        "qr-no" : qrid.slice(9,12),
+        ///"qr-no" : qrid.slice(9,12),
         "path-table":[],
     }
 

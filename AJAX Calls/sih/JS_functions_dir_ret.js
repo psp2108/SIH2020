@@ -84,29 +84,19 @@ function get_direction(map, routeTable, target, source){
 
 
 
-function send_Json_for_directions(floor_no,node_no){
-    var map = {
-        "0": {"1":225},
-        "1": {"0":45, "1":0, "2":270},
-        "2": {"2":90, "3":0},
-        "3": {"2":180, "4":0},
-        "4": {"3":180, "5":90},
-        "5": {"4":270, "5":180, "6":90},
-        "6": {"5":270},
-        "file-path" : "location of .dwg or any map file"
-    }
+function send_Json_for_directions(floor_no_dest,node_no,s_floor_no,node_id,map_node,route_table){
 
-    var routeTable = [
-        { "t": 0, "p": 0 },
-        { "t": 1, "p": 0 },
-        { "t": 2, "p": 1 },
-        { "t": 3, "p": 2 },
-        { "t": 4, "p": 3 },
-        { "t": 5, "p": 4 },
-        { "t": 6, "p": 5 }
-    ]
 
-    var target = 6;
-    var source = 1;
+    var map = map_node;
+    //console.log("Data is");
+    //console.log(route_table);
+
+    var routeTable = route_table;
+
+    //console.log(routeTable);
+
+
+    var target = node_no;
+    var source = node_id;
     get_direction(map, routeTable, target, source);
 }
