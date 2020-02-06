@@ -45,7 +45,6 @@ function sendQR(QRid)
                send_Json_for_directions();
 
                function get_direction(map, routeTable, target, source){
-                    //var getDirections = function(map, routeTable, target, source){
                     var faceAngel = map[source][source];
                     var path = [];
                     var directions = [];
@@ -102,17 +101,10 @@ function sendQR(QRid)
                             else{
                                 console.log("Angle above 360");
                             }
-                        //}
-
-                        return {path: path, directions: directions};
                     }
 
-
+                    return {path: path, directions: directions};
                     
-
-                    //var t = getDirections(map, routeTable, target, source);
-                    //console.log(getDirections);
-                    //alert(t);
                 }
                 
                 function send_Json_for_directions(){
