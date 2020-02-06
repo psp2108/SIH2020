@@ -63,4 +63,5 @@ var o = {
     ]
 }
 var t = preEncode(o)
-console.log(t, t.length + ":bits,", (t.length / 8) + ":bytes,", t.length % 8)
+// console.log(t, t.length + ":bits,", (t.length / 8) + ":bytes,", t.length % 8)
+console.log(t)

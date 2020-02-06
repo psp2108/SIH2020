@@ -158,4 +158,14 @@ app.get('/getBuilding/:id', function(req, res){
     res.status(200).json(data);
 });
 
+app.post('/regBuilding',function(req, res){
+    
+
+});
+
+app.post('/setMap',function(req, res){
+
+});
+
+
 app.listen(port);
