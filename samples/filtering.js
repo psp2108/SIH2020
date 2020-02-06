@@ -151,3 +151,6 @@ var JSONobj = {
         }
     ]
 };
+
+
+console.log(JSONobj);
