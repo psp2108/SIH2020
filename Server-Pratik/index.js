@@ -144,7 +144,8 @@ app.get('/getBuilding/:id', function(req, res){
                 "floor" : 0,
                 "qr-id" : "",
                 "path-table" : [
-                    { "t": 1, "p": -1 },
+                    { "t": 0, "p": 0},
+                    { "t": 1, "p": 0},
                     { "t": 2, "p": 3 },
                     { "t": 3, "p": 4 },
                     { "t": 4, "p": 5 },
