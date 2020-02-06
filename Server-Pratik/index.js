@@ -200,7 +200,7 @@ app.get('/getBuilding/:id', function(req, res){
         
         "source-node": [
             {
-                "node" : 4,
+                "node" : 1,
                 "floor" : 0,
                 "qr-id" : "00445-02-002"
             },
