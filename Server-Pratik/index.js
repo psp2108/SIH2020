@@ -16,7 +16,7 @@ var mongoURL = "mongodb://" + mongoHost + ":" + mongoPort + "/";
 MongoClient.connect(mongoURL + mongoDB, function(err, db) {
     if (err){ 
         console.log("Failed to connect to database");
-        throw err;
+        // throw err;
     }
     console.log("Database created!");
 
