@@ -42,7 +42,7 @@ function sendQR(QRid)
                 //alert(JSON.stringify(parsed));
                 var floor_no=0
                 alert(JSON.stringify(parsed["meta-data"]["maps"]["floor"+floor_no]));
-                
+
 
                 
             },
@@ -53,11 +53,7 @@ function sendQR(QRid)
         }
     );
 
-    // $.get("http://localhost:3000/getBuilding/:123", {number: 345} , function(data){
-    //     // Display the returned data in browser
-    //     console.log(data);
-    //     alert(JSON.stringify(data));
-    // });
+    
     
 }
 
