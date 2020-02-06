@@ -38,8 +38,22 @@ app.get('/', function (req, res) {
 });
 
 app.post('/registerBuilding', function(req, resp){
-    var buildingData = req.body;
-    buildingData["maps"] = [];
+    var buildingData = {
+        'meta-data':{}
+    };
+    buildingData['meta-data'] = req.body;
+    buildingData['meta-data']["maps"] = {};
+
+    var temp = {}
+    for(var i=0; i<buildingData['meta-data']['total-floors']; i++){
+        temp['floor'+i] = {};
+        temp['floor'+i]['name'] = "";
+        temp['floor'+i]['destinations'] = [];
+        buildingData['meta-data']["maps"]['floor'+i] = {};
+        buildingData['meta-data']["maps"]['floor'+i]['file-path'] = "no-path";
+    }
+
+    buildingData["floor-destination"] = temp;
     buildingData["source-node"] = [];
 
     MongoClient.connect(mongoURL, function(err, db) {
