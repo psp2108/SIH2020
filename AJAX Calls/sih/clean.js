@@ -1,12 +1,25 @@
-var cl = function(err){
+var ConvertBase = function (num) {
+    return {
+        from : function (baseFrom) {
+            return {
+                to : function (baseTo) {
+                    return parseInt(num, baseFrom).toString(baseTo);
+                }
+            };
+        }
+    };
+};
+
+var cl = function(binStrin){
     // Step 1: To convert into binary
+    
     ConvertBase.dec2bin = function (num) {
         return ConvertBase(num).from(10).to(2);
     };
 
     // Step 2:
     var arr=[];
-    var binStrin = "00110000001100000011010000110100001101010010110100110000001100100010110100110000001100000011001000000000010000000001000000001100000000100000000100000000001100000001010000000100000000000000000001010000000101000000011000111010101000000000001111101111111111111111111111000000000100000000000000000000";
+    //var binStrin = "00110000001100000011010000110100001101010010110100110000001100100010110100110000001100000011001000000000010000000001000000001100000000100000000100000000001100000001010000000100000000000000000001010000000101000000011000111010101000000000001111101111111111111111111111000000000100000000000000000000";
     var len = binStrin.length;
     console.log(len);
     var y = binStrin.slice(0,96);
@@ -46,13 +59,15 @@ var cl = function(err){
             if(blg[j] == 0){
                 break;
             }
-            console.log(err);
+            //console.log(err);
             var temp = {};
             temp["t"] = count;
             temp["p"] = blg[j] ;
           
             o["path-table"][j] = temp;
         }
-        console.log("PathTable is :-",o);
+        //console.log("PathTable is :-",o);
+        return(o);
     }
-cl();
+
+//cl();

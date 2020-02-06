@@ -35,4 +35,5 @@ function ret_dest_list(data){
     }
     // Response | List of Destinations
     console.log(destOnFloors);
+    return(destOnFloors);
 }

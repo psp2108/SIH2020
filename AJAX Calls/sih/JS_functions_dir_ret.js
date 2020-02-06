@@ -84,7 +84,7 @@ function get_direction(map, routeTable, target, source){
 
 
 
-function send_Json_for_directions(){
+function send_Json_for_directions(floor_no,node_no){
     var map = {
         "0": {"1":225},
         "1": {"0":45, "1":0, "2":270},

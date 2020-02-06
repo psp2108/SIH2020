@@ -7,32 +7,29 @@
     
     <script src="JS_functions_dir_ret.js"></script>
     <script src="JS_functions.js"></script>
+    <script src="clean.js"></script>
+    <script src="get_dirt_data.js"></script>
 </head>
 <body>
     <form method="GET" action="test2.php">
         <input type="text" name="inp1">
-        <input type="button" id="sub" onclick="sendQR('12345-07-009')">
+        <input type="button" id="sub" onclick="sendQR()">
     </form>
 <script>
-function sendQR(QRid)
+function sendQR()
 {
-    var i = 0;
-    var BRid = "";
-    while(QRid[i] != '-' ){
-       
-       BRid += QRid[i];
-       i++;
-   }
-//    alert(BRid)
+    var binStrin = "00110000001100000011010000110100001101010010110100110000001100100010110100110000001100000011001000000000010000000001000000001100000000100000000100000000001100000001010000000100000000000000000001010000000101000000011000111010101000000000001111101111111111111111111111000000000100000000000000000000";
+    var clean_data=cl(binStrin);
+    var building_id=clean_data["building-id"];
+    console.log(building_id);
     $.ajax(
         {
             type: "GET",
             url: "http://localhost:3000/getBuilding/:123",
-            // url: "https://jsonplaceholder.typicode.com/posts",
-            // dataType: "json",
-            // data: {
-            //          "BRid" : BRid
-            //     },
+            dataType: "json",
+            data: {
+                     "building_id" : building_id
+                },
             success: function(data) {
                 //console.log(data);
                 // var parsed = JSON.parse(data);
@@ -40,9 +37,11 @@ function sendQR(QRid)
                 // //alert(JSON.stringify(parsed));
                 // var floor_no=0;
                 //alert(JSON.stringify(parsed["meta-data"]["maps"]["floor"+floor_no]));
-
-                ret_dest_list(data);
-                send_Json_for_directions();
+                
+                
+                
+                var dest_list=ret_dest_list(data);
+                send_Json_for_directions(0,6);
 
                 
 
