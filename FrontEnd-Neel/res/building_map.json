@@ -7,12 +7,24 @@
         "node1": {
             "x" : 12,
             "y" : 23,
-            "type": "QR"
+            "type": ["QR"]
         },
         "node2": {
             "x" : 15,
             "y" : 25,
-            "type": "Path"
+            "type": ["Path"]
+        },
+        "node3": {
+            "x" : 15,
+            "y" : 25,
+            "type": ["Dest"],
+            "name" : "Name of destination"
+        },
+        "node4": {
+            "x" : 15,
+            "y" : 25,
+            "type": ["Via"],
+            "name" : "Name of via"
         }
     },
 
@@ -24,3 +36,8 @@
     ],
     "ref_angle":45
 }
+
+-------------------------------------------
+
+QR | Via | Path | Dest
+
