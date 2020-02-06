@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="icon" href="images/favicon.png" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="styles/app.css">
+        <link rel="stylesheet" href="styles/br.css">
         <script type="text/javascript" src="scripts/sticky.js"></script>
         <!-- GENERAL INCLUDES -->
     </head>
@@ -68,12 +69,40 @@
         <div class="card dynamic-section">
             <table border="0">
                 <tr class="section-title">
-                    <td>Dynamic Title<hr></td>
+                    <td id="section-title-id">Create Map<hr></td>
                 </tr>
                 <tr class="section-body">
                     <td>
                         <center>
-                        	Dynamic Section Body
+                            <!----------------------------------------------------->
+                        	<div class="basic-detail-section" id="basic-detail-section">
+                                <form>
+                                    <table border="0">
+                                        <col width="35%">
+                                        <col width="65%">
+                                        <tr>
+                                            <td class="input-label">Number </td>
+                                            <td><input type="text" class="br-inputs"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="input-label">Name </td>
+                                            <td><input type="text" class="br-inputs"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="input-label">Total Floors </td>
+                                            <td><input type="text" class="br-inputs"></td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="br-inputs-button" value="Register">
+                                </form>
+                            </div>
+                            <!----------------------------------------------------->
+
+                            <!----------------------------------------------------->
+                            <div class="map-build-section" id="map-build-section">
+                                <a href="map-builder.html">Open Map Builder</a>
+                            </div>
+                            <!----------------------------------------------------->
                         </center>
                     </td>
                 </tr>
@@ -91,6 +120,10 @@
 
         <script>
             window.onscroll = function() {myFunction()};
+            window.onload = function() {
+                document.getElementById("map-build-section").style.display = "none";
+                document.getElementById("section-title-id").innerHTML = "Fill Basic Details<hr>";
+            };
         </script>
 
     </body>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="styles/br.css">
+</head>
+<body>
+	<table id="map-table" border="1">
+		
+	</table>
+	<button onclick="connectNodes()">Connect Nodes</button>
+	<button onclick="preprocessJSON()">Save This</button>
+	<input type="text" id="Node1" placeholder="Node1">
+	<input type="text" id="Node2" placeholder="Node2">
+	<p id="qr-red-degree">
+
+	</p>
+	<div>
+		<input type="range" name="points" min="0" max="360" onchange="adjustArrow(this)" id="ref-angle">
+		<div id="points-demo">
+			<div>
+				<a href="#">
+				  <span class="left"><img src="images/north-compass.png" class="north-arrow"></span>
+				</a>
+			  </div>
+			
+		</div>
+	</div>
+	<script type="text/javascript">
+		function adjustArrow(x){
+			let o = document.getElementById("points-demo");
+			let k = x.value;
+			//o.style.WebkitTransform = "rotate("+k.toString()+"deg)";
+			document.getElementById("qr-red-degree").innerHTML = k;
+		}
+	</script>
+	<script type="text/javascript">
+		var rn = 15;
+		var cn = 15;
+		var globalCount=0;
+		var non;
+		var temp;
+		var lineColor = "grey";
+
+		//-------------JSON---------------
+		var adjList = [];
+		var nodes = {};
+		let building = {};
+		building["no"] = "12345";
+		building["floorno"] = "1";
+		//-------------JSON---------------
+
+		scanNumberOfNode();
+
+		function scanNumberOfNode(){
+			non = prompt("Enter Number of Nodes: [We are also doing this to make you concious about the map that you are making.]", "10");
+			if(non=="exit"){
+	  			exit();
+	  		}
+		  	if (non == null || non == "") {
+		  		alert("Error: You must enter the number of nodes");
+		  		scanNumberOfNode();
+		  	} 
+		  	non = parseInt(non);
+		  	createCanvas(rn,cn,non);
+		}
+		
+		function createCanvas(nr,nc,non){
+			let flag=0;
+			let matCount=0,j,i;
+			// nr => no of rows
+			// nc => no of cols
+			var cell;
+
+			// Get the Table Object
+			var table = document.getElementById('map-table');
+
+			// Prepare Rows & Keep Appending
+			for(i=0;i<nr;i++){
+
+				// Create New Row
+				row = table.insertRow(i);
+				y = (nr-i)-1;
+				
+				// Keep Appending Childs 
+				for(j=0;j<nc;j++){
+
+					// Append Single Child
+					x = j;
+					cell = row.insertCell(j);
+					cell.classList.add();
+					cell.innerHTML = x.toString() + "," +  y.toString();
+					cell.id = x.toString() + "," +  y.toString();
+					cell.onclick = function() {cellSelected(this);};		
+				}	
+			}
+
+			// Adj List Making
+			console.log(adjList);
+			for(i=0;i<non;i++){
+				temp = [];
+				for(j=0;j<non;j++){
+					temp.push(-1);
+					console.log("Adding to Temp");
+				}
+				adjList.push(temp);
+			}
+			//console.log(adjList);
+		}
+
+		function drawLine(x1, y1, x2, y2){
+			console.log("Status: drawLine Called");
+			let i;
+			var x_sim = (x1==x2);
+			var y_sim = (y1==y2);
+
+			console.log("x1: "+x1.toString());
+			console.log("y1: "+y1.toString());
+			console.log("x2: "+x2.toString());
+			console.log("y2: "+y2.toString());
+			console.log("x_sim: "+x_sim.toString());
+			console.log("y_sim: "+y_sim.toString());
+			if(x_sim || y_sim){
+				straightline(x1, y1, x2, y2, x_sim);
+			}else{
+				bresenhamLine(x1, y1, x2, y2);
+			}
+		}
+
+		function straightline(x1, y1, x2, y2, x_sim){
+			if(x_sim){
+				console.log("Line is has same X");
+				// X Points are Similar
+				if(y1<y2){
+					for(i=y1+1;i<y2;i++){
+						console.log("Drawing Point | Moving Up");
+						colorCell(x1, i, lineColor);		
+					}
+				}else{
+					for(i=y2+1;i<y1;i++){
+						console.log("Drawing Point | Moving Down");
+						colorCell(x2, i, lineColor);		
+					}
+				}
+				
+			}else{
+				console.log("Line is has same Y");
+				// Y Points are Similar
+				if(x1<x2){
+					for(i=x1+1;i<x2;i++){
+						console.log("Drawing Point | Moving Right");
+						colorCell(i, y1, lineColor);		
+					}
+				}else{
+					for(i=x2+1;i<x1;i++){
+						console.log("Drawing Point | Moving Left");
+						colorCell(i, y2, lineColor);		
+					}
+				}
+				
+			}
+		}
+
+		function bresenhamLine(x1, y1, x2, y2){
+			// Iterators, counters required by algorithm
+			var x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
+
+			// Calculate line deltas
+			dx = x2 - x1;
+			dy = y2 - y1;
+
+			// Create a positive copy of deltas (makes iterating easier)
+			dx1 = Math.abs(dx);
+			dy1 = Math.abs(dy);
+
+			// Calculate error intervals for both axis
+			px = 2 * dy1 - dx1;
+			py = 2 * dx1 - dy1;
+
+			// The line is X-axis dominant
+			if (dy1 <= dx1) {
+				// Line is drawn left to right
+				if (dx >= 0) {
+				    x = x1; y = y1; xe = x2;
+				} else { // Line is drawn right to left (swap ends)
+				    x = x2; y = y2; xe = x1;
+				}
+
+				colorCell(x, y, lineColor); // Draw first pixel
+
+				// Rasterize the line
+				for (i = 0; x < xe; i++) {
+				    x = x + 1;
+
+				    // Deal with octants...
+				    if (px < 0) {
+				        px = px + 2 * dy1;
+				    } else {
+				        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+				            y = y + 1;
+				        } else {
+				            y = y - 1;
+				        }
+				        px = px + 2 * (dy1 - dx1);
+				    }
+
+				    // Draw pixel from line span at currently rasterized position
+				    colorCell(x, y, lineColor);
+				}
+			} else { // The line is Y-axis dominant
+				// Line is drawn bottom to top
+				if (dy >= 0) {
+				    x = x1; y = y1; ye = y2;
+				} else { // Line is drawn top to bottom
+				    x = x2; y = y2; ye = y1;
+				}
+
+				//colorCell(x, y); // Draw first pixel
+
+				// Rasterize the line
+				for (i = 0; y < ye; i++) {
+				    y = y + 1;
+
+				    // Deal with octants...
+				    if (py <= 0) {
+				        py = py + 2 * dx1;
+				    } else {
+				        if ((dx < 0 && dy<0) || (dx > 0 && dy > 0)) {
+				            x = x + 1;
+				        } else {
+				            x = x - 1;
+				        }
+				        py = py + 2 * (dx1 - dy1);
+				    }
+
+				    // Draw pixel from line span at currently rasterized position
+				    colorCell(x, y, lineColor);
+				}
+			}
+
+			// Remaining - Retain the Color
+			colorCell(x1, y1, "lightgreen");
+			colorCell(x2, y2, "lightgreen");
+		}
+
+		function connectNodes(){
+			let q;
+			let point = [];
+			let point2 = [];
+			let a1,a2;
+
+			console.log("Status: Call Connecting Nodes Called");
+
+			// Scan Both Points | Currently Using Array & Afterward Using Touch-----------
+			q = document.getElementById("Node1").value;
+			q = isPresentInNodeList_No(q);
+			point.push(q["x"]);
+			point.push(q["y"]);
+			console.log(q);
+
+			q = document.getElementById("Node2").value;
+			q = isPresentInNodeList_No(q);
+			point2.push(q["x"]);
+			point2.push(q["y"]);
+			console.log(q);
+
+			//-----------------------------------------------------------------------------
+
+			//PRE-PROCESS Split the Points to Xs and Ys------------------------------------
+			//point = point.split(",");
+			//point2 = point2.split(",");
+			let x1 = parseInt(point[0]);
+			let y1 = parseInt(point[1]);
+			let x2 = parseInt(point2[0]);
+			let y2 = parseInt(point2[1]);
+			//-----------------------------------------------------------------------------
+
+			// Make Entry in Adj Table-----------------------------------------------------
+			
+			// Find the Node Number from Coordinate
+			a1 = isPresentInNodeList_C(x1,y1);
+			a1 = parseInt(a1["no"]);
+			a2 = isPresentInNodeList_C(x2,y2);
+			a2 = parseInt(a2["no"]);
+
+			// Make Entry in the table
+			adjList[a1][a2] = 1;
+			adjList[a2][a1] = 1;
+			console.log(a1);
+			console.log(a2);
+			console.log(adjList);
+
+			//-----------------------------------------------------------------------------
+
+			// Draw Line-------------------------------------------------------------------	
+			console.log(point);
+			console.log(point2);
+			drawLine(x1, y1, x2, y2);
+			//-----------------------------------------------------------------------------
+		}
+
+		function colorCell(x, y, color){
+			console.log("STATUS : Entered Color Cell for ("+x.toString()+","+y.toString()+")");
+			temp = document.getElementById(x.toString()+","+y.toString());
+			temp.style.background = color;
+		}
+
+		function cellSelected(x){
+			//x.id;
+
+			//Preprocess Input
+			var point = x.id.split(",");
+
+			if(isPresentInNodeList_C(point[0],point[1])){
+				alert("Node Already Present");
+			}else{
+				var gc = globalCount.toString();
+				let temp2;
+
+				//Make Entry in Node List
+				nodes["node"+gc] = {};
+				nodes["node"+gc]["x"] = point[0];
+				nodes["node"+gc]["y"] = point[1];
+				nodes["node"+gc]["type"] = [];
+
+				temp = "\n\ Enter Type of Node:\n\ 1. QR Code [QRANGE]\n\ 2. Via [RED]\n\ 3. Path [ORANGE]\n\ 4. Destition [BLUE]";
+
+				temp2 = prompt(temp,"");
+			  	if (temp2 == null || temp2 == "") {
+			  		temp2 = 4;
+			  		alert("Error: You must enter the type of node");
+			  	} 
+
+			  	//Based on Type of Node Select Color
+			  	color = getColor(temp2);
+
+			  	//Set Type in the Node's type key
+			  	setNodeType(gc, temp2);
+
+			  	console.log("NODE: "+temp2);
+			  	console.log(temp2=="3");
+			  	console.log(nodes);
+
+				//Color the Cell
+				colorCell(point[0], point[1], color);
+
+				//Change Inner HTML to Node Number
+				temp = document.getElementById(point[0]+","+point[1]);
+				temp.innerHTML = gc;
+				globalCount++;
+			}
+		}
+
+		function getColor(temp2){
+			if(temp2=="1"){
+		  		color="orange";
+		  	}else if(temp2=="2"){
+		  		color="red";
+		  	}else if(temp2=="3"){
+		  		color="blue";
+		  	}else if(temp2=="4"){
+		  		color="lightgreen";
+		  	}
+
+		  	return color;
+		}
+
+		function setNodeType(gc, temp2){
+			if(temp2=="1"){
+		  		nodes["node"+gc]["type"].push("QR");
+				let x_qr = parseInt(nodes["node"+gc]["x"]);
+				let y_qr = parseInt(nodes["node"+gc]["y"]);
+				let facing_degree = prompt("Enter Facing Degress: ","270");
+
+				adjList[x_qr][y_qr] = facing_degree;
+				adjList[y_qr][x_qr] = facing_degree;
+		  	}else if(temp2=="2"){
+		  		nodes["node"+gc]["type"].push("Via");
+				nodes["node"+gc]["name"] = prompt("Enter the Via Point Name: ","Esclator");
+		  	}else if(temp2=="3"){
+		  		nodes["node"+gc]["type"].push("Path");
+		  	}else if(temp2=="4"){
+		  		nodes["node"+gc]["type"].push("Dest");
+				nodes["node"+gc]["name"] = prompt("Enter the Destination Name: ","Director's Office");
+		  	}
+		  	return true;
+		}
+
+		function isPresentInNodeList_C(x,y){
+			// Co-ordinate Based Search
+			// Returns False if the Node is not Present in the Nodes List
+			// If Its there then the function returns the node object as result
+
+			let temp_x;
+			let temp_y;
+			let i;
+
+			// Loop through the nodes list
+			for (i = 0; i<Object.keys(nodes).length; i++) {
+				// Check if the node has same coordinate as passed
+
+				console.log("comparing");
+
+				temp_i = i.toString();
+				temp_x = nodes["node"+temp_i]["x"];
+				temp_y = nodes["node"+temp_i]["y"];
+
+				if(temp_x==x){
+					if(temp_y==y){
+						var res = nodes["node"+temp_i];
+						res["no"] = i.toString();
+						return res;
+					}
+				}
+			}
+			return false;	
+		}
+
+		function isPresentInNodeList_No(no){
+			// Co-ordinate Based Search
+			// Returns False if the Node is not Present in the Nodes List
+			// If Its there then the function returns the node object as result
+
+			let i;
+
+			// try-catch to check the presense of node
+			try{
+				return nodes["node"+no];
+			}		
+			catch(err) {
+			  	return false;	
+			}
+		}
+
+		function preprocessJSON(){
+			/*
+			{
+			    "building":{
+			        "no" : "",
+			        "floorno" :""
+			    },
+			    "nodes" : {
+			        "node1": {
+			            "x" : 12,
+			            "y" : 23,
+			            "type": ["QR"]
+			        },
+			        "node2": {
+			            "x" : 15,
+			            "y" : 25,
+			            "type": ["Path"]
+			        }
+			    },
+
+			    "adj_matrix": [
+			        [0,0,0,0],
+			        [0,68,0,1],
+			        [0,0,0,0],
+			        [0,0,0,0]
+			    ],
+			    "ref_angle":45
+			}
+			*/
+			let res = {};
+			res["building"] = building;
+			res["nodes"] = nodes;
+			res["adj_matrix"] = adjList;
+			res["ref_angle"] = document.getElementById("").value;
+			console.log(res);
+		}
+
+		function prepareAdjMatrix(){
+			
+		}	
+	</script>
+</body>
+</html>
