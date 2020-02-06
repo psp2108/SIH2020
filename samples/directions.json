@@ -1,0 +1,10 @@
+{
+    "n": "Go Straight",
+    "ne": "Slight Right",
+    "e": "Turn Right",
+    "se": "Turn Around and Slight Left",
+    "s": "Turn Around",
+    "sw": "Turn Around and Slight Right",
+    "w": "Turn Left",
+    "nw": "Slight Left"
+}

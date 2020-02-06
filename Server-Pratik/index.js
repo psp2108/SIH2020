@@ -4,6 +4,12 @@ var port = process.env['SIH_PORT'] || 3000;
 const express = require('express');
 const app = express();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.get('/', function (req, res) {
     console.log(req);
     res.send('hello world');
@@ -147,7 +153,9 @@ app.get('/getBuilding/:id', function(req, res){
             }
         ]
     };
-    res.json(data);
+    console.log(req, "Requested")
+    res.setHeader('content-type', 'application/json');
+    res.status(200).json(data);
 });
 
 app.listen(port);

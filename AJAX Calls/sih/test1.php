@@ -1,4 +1,6 @@
-<?php echo"Hello"?>
+<?php 
+    echo"Hello";
+?>
 
 <html>
 <head>
@@ -11,25 +13,48 @@
 <body>
     <form method="GET" action="test2.php">
         <input type="text" name="inp1">
-        <input type="button" id="sub">
+        <input type="button" id="sub" onclick="sendQR('12345-07-009')">
     </form>
 <script>
-   $("#sub").click(function(){
-    $.ajax({
-        type: "GET",
-        url: "../api/challenges/score_read.php",
-        // dataType: 'json',
-        success: function(data) {
-            var parsed = JSON.parse(data);
-            alert(parsed[0].name);
-        },
-        error: function (result) {
-            alert("Err");
-            console.log(result);
-        },
-    });
-});
+function sendQR(QRid)
+{
+    var i = 0;
+    var BRid = "";
+    while(QRid[i] != '-' ){
+       
+       BRid += QRid[i];
+       i++;
+   }
+//    alert(BRid)
+    $.ajax(
+        {
+            type: "GET",
+            url: "http://localhost:3000/getBuilding/:123",
+            // url: "https://jsonplaceholder.typicode.com/posts",
+            // dataType: "json",
+            // data: {
+            //          "BRid" : BRid
+            //     },
+            success: function(data) {
+                console.log(data);
+                //var parsed = JSON.parse(data);
+                var parsed = data;             
+                alert(JSON.stringify(parsed));
+            },
+            error: function (result) {
+                alert("Err");
+                console.log(result);
+            },
+        }
+    );
 
+    // $.get("http://localhost:3000/getBuilding/:123", {number: 345} , function(data){
+    //     // Display the returned data in browser
+    //     console.log(data);
+    //     alert(JSON.stringify(data));
+    // });
+    
+}
 
 
 
