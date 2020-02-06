@@ -1,8 +1,10 @@
 require("dotenv").config();
-
+var http = require('http'); 
 var port = process.env['SIH_PORT'] || 3000;
+
 const express = require('express');
 const app = express();
+
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -15,7 +17,7 @@ app.get('/', function (req, res) {
     res.send('hello world');
 });
 
-app.get('/getBuilding/:id', function(req, res){
+app.get('/getBuilding/:id', function(req, res){  
     data = {
         "meta-data" : {
             "name" : "SAMPLE BUILDING NAME",
@@ -157,5 +159,15 @@ app.get('/getBuilding/:id', function(req, res){
     res.setHeader('content-type', 'application/json');
     res.status(200).json(data);
 });
+
+app.post('/regBuilding',function(req, res){
+
+
+});
+
+app.post('/setMap',function(req, res){
+
+});
+
 
 app.listen(port);
