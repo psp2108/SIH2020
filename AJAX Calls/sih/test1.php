@@ -37,9 +37,14 @@ function sendQR(QRid)
             //     },
             success: function(data) {
                 console.log(data);
-                //var parsed = JSON.parse(data);
+                // var parsed = JSON.parse(data);
                 var parsed = data;             
-                alert(JSON.stringify(parsed));
+                //alert(JSON.stringify(parsed));
+                var floor_no=0
+                alert(JSON.stringify(parsed["meta-data"]["maps"]["floor"+floor_no]));
+                
+
+                
             },
             error: function (result) {
                 alert("Err");

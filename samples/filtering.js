@@ -15,7 +15,7 @@ var JSONobj = {
                 "6": {"5":270},
                 "file-path" : "location of .dwg or any map file"
             },
-            "floor1" : {
+            "floor1" : {    
                 "0": {},
                 "1": {"1":0, "2":270},
                 "2": {"2":90, "3":0},
@@ -153,4 +153,6 @@ var JSONobj = {
 };
 
 
-console.log(JSONobj);
+// console.log(JSONobj["meta-data"]["maps"]);
+var i = 0;
+console.log(JSONobj["meta-data"].maps["floor"+i]);
