@@ -1,19 +1,89 @@
 require("dotenv").config();
+
+var MongoClient = require('mongodb').MongoClient;
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const router = express.Router();
 
 var port = process.env['SIH_PORT'] || 3000;
 
+var mongoHost = process.env['SIH_MONGODB_HOST'] || "localhost";
+var mongoPort = process.env['SIH_MONGODB_PORT'] || "27017";
+var mongoDB = process.env['SIH_MONGODB_DB'] || "sih2020";
+var mongoURL = "mongodb://" + mongoHost + ":" + mongoPort + "/";
+
+MongoClient.connect(mongoURL + mongoDB, function(err, db) {
+    if (err){ 
+        console.log("Failed to connect to database");
+        throw err;
+    }
+    console.log("Database created!");
+
+    // db.close();
+});
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+// Configuring body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
     console.log(req);
     res.send('hello world');
+});
+
+app.post('/registerBuilding', function(req, resp){
+    var buildingData = req.body;
+    buildingData["maps"] = [];
+    buildingData["source-node"] = [];
+
+    MongoClient.connect(mongoURL, function(err, db) {
+        if (err){
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"})
+        }
+        console.log("Connected");
+        var dbo = db.db(mongoDB);
+        dbo.collection("buildings").insertOne(buildingData, function(err, res) {
+          if (err) {
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+          };
+          console.log("DB Connected");
+        //   db.close();
+          resp.status(200).json({message : "Inserted", status : "succeed"})
+        });
+    });
+});
+
+app.post('/registerBuilding/addDetails', function(req, resp){
+    var buildingData = req.body;
+    buildingData["maps"] = [];
+    buildingData["source-node"] = [];
+
+    MongoClient.connect(mongoURL, function(err, db) {
+        if (err){
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"})
+        }
+        console.log("Connected");
+        var dbo = db.db(mongoDB);
+        dbo.collection("buildings").insertOne(buildingData, function(err, res) {
+          if (err) {
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+          };
+          console.log("DB Connected");
+        //   db.close();
+          resp.status(200).json({message : "Inserted", status : "succeed"})
+        });
+    });
+});
+
+app.get('/getPdf/:id', function(req, res){
+    const file = `${__dirname}/sample_files/QRs.pdf`;
+    res.download(file); // Set disposition and send it.
 });
 
 app.get('/getBuilding/:id', function(req, res){  
@@ -169,5 +239,6 @@ app.get('/getBuilding/:id', function(req, res){
 
 // });
 
-
+app.use(router);
 app.listen(port);
+console.log("Server started on port " + port)
