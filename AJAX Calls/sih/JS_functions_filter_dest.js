@@ -10,7 +10,6 @@ document.head.appendChild(script);
 function ret_dest_list(data){
     
     var no_of_floors = data["meta-data"]["total-floors"];
-    console.log(no_of_floors);
     var destOnFloors = {}; 
     var temp;
 

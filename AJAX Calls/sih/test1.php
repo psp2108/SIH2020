@@ -6,7 +6,7 @@
 <head>
     
     <script src="JS_functions_dir_ret.js"></script>
-    <script src="JS_functions.js"></script>
+    <script src="JS_functions_filter_dest.js"></script>
     <script src="clean.js"></script>
     <script src="get_dirt_data.js"></script>
 </head>
@@ -46,12 +46,7 @@ function sendQR()
                      "building_id" : building_id
                 },
             success: function(data) {
-                //console.log(data);
-                // var parsed = JSON.parse(data);
-                // var parsed = data;             
-                // //alert(JSON.stringify(parsed));
-                // var floor_no=0;
-                //alert(JSON.stringify(parsed["meta-data"]["maps"]["floor"+floor_no]));
+                
                 var dest_list = ret_dest_list(data);
                 var node_id;
                 var s_floor_no;
@@ -70,19 +65,11 @@ function sendQR()
 
                         map_node = map_nodes["floor"+s_floor_no];
                         
-                            
-                        
-
-                        
                     }
-                    
                     
                 }
 
                 send_Json_for_directions(0,6,s_floor_no,node_id,map_node,route_table);
-
-                
-
                 
             },
             error: function (result) {
@@ -92,11 +79,7 @@ function sendQR()
         }
     );
 
-    // $.get("http://localhost:3000/getBuilding/:123", {number: 345} , function(data){
-    //     // Display the returned data in browser
-    //     console.log(data);
-    //     alert(JSON.stringify(data));
-    // });
+    
     
 }
 

@@ -131,12 +131,12 @@ app.get('/getBuilding/:id', function(req, res){
             {
                 "node" : 4,
                 "floor" : 0,
-                "qr-id" : "[building reg no]-[floor number 3 digit]-[0 to 'n']"
+                "qr-id" : "00445-02-002"
             },
             {
                 "node" : 4,
                 "floor" : 1,
-                "qr-id" : "[building reg no]-[floor number 3 digit]-[0 to 'n']"
+                "qr-id" : "00445-02-003"
             },
             {
                 "node" : 1,
