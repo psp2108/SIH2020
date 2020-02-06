@@ -74,6 +74,29 @@ function handle_qr_callback(result){
     // Navigate to the next div
     document.getElementById("qr-scanner-id").style.display = "none";
     document.getElementById("dest-selection-id").style.display = "block";
+    //LINE TO SHOW QR CODE :: document.getElementById("dest-selection-id").innerHTML = result;
+    
+    //---------------------------------------------------------------later create separate function
+    var str = result;
+    var bytes = []; // char codes
+    var bytesv2 = []; // char codes
+
+    for (var i = 0; i < str.length; ++i) {
+      var code = str.charCodeAt(i);
+      
+      bytes = bytes.concat([code]);
+      
+      bytesv2 = bytesv2.concat([code & 0xff, code / 256 >>> 0]); //Adds 0s in Between
+    }
+
+    // 72, 101, 108, 108, 111, 31452
+    console.log('bytes', bytes.join(', '));
+
+    // 72, 0, 101, 0, 108, 0, 108, 0, 111, 0, 220, 122
+    console.log('bytesv2', bytesv2.join(', '));
+    //---------------------------------------------------------------later create separate function
+
+    document.getElementById("dest-selection-id").innerHTML = bytesv2.join(', ');
     document.getElementById("section-title-id").innerHTML = "Select Destination"+"<hr>";
     
 }
