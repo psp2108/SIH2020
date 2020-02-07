@@ -47,6 +47,15 @@
     border-radius: 100px;
     background: #141E30;    
 }
+/* INSTR STATUS -----------------------------*/
+.number-done{
+    text-align: center;
+    color: white;
+    border-radius: 100px;
+    background: #11998e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 .inst{
     color: whitesmoke;
     padding-left: 8px;
@@ -120,3 +129,16 @@
     left: 0;
 }
 /* Making Nav Stick ----------- */
+
+input[type=text]{
+    border: 0;
+    border-radius: 10px;
+}
+.br-inputs-button{
+    display: block;
+    border: 0;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 2px 2px;
+}
+

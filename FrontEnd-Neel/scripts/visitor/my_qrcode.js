@@ -96,7 +96,7 @@ function handle_qr_callback(result){
     console.log('bytesv2', bytesv2.join(', '));
     //---------------------------------------------------------------later create separate function
 
-    document.getElementById("dest-selection-id").innerHTML = bytesv2.join(', ');
+    //document.getElementById("dest-selection-id").innerHTML = bytesv2.join(', ');
     document.getElementById("section-title-id").innerHTML = "Select Destination"+"<hr>";
     
 }

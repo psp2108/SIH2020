@@ -2,16 +2,25 @@
 <html>
 <head>
 	<title></title>
+	<!-- GENERAL INCLUDES -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="icon" href="images/favicon.png" type="image/gif" sizes="16x16">
+	<link rel="stylesheet" href="styles/app.css">
 	<link rel="stylesheet" href="styles/br.css">
+	<!-- GENERAL INCLUDES -->
 </head>
 <body>
 	<table id="map-table" border="1">
 		
 	</table>
-	<button onclick="connectNodes()">Connect Nodes</button>
-	<button onclick="preprocessJSON()">Save This</button>
+	<button class="br-inputs-button" onclick="connectNodes()">Connect Nodes</button>
+	<button class="br-inputs-button" onclick="preprocessJSON()">Save This</button>
+	<button class="br-inputs-button" onclick="backPressed();">Go Back</button>
 	<input type="text" id="Node1" placeholder="Node1">
 	<input type="text" id="Node2" placeholder="Node2">
+	<input type="text" id="qr-code-degree" placeholder="QR Code Degree">
 	<p id="qr-red-degree">
 
 	</p>
@@ -23,7 +32,6 @@
 				  <span class="left"><img src="images/north-compass.png" class="north-arrow"></span>
 				</a>
 			  </div>
-			
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -51,6 +59,11 @@
 		//-------------JSON---------------
 
 		scanNumberOfNode();
+
+		function backPressed(){
+			localStorage.setItem("mapDone", "true");
+			window.location.href = 'br.html';
+		}
 
 		function scanNumberOfNode(){
 			non = prompt("Enter Number of Nodes: [We are also doing this to make you concious about the map that you are making.]", "10");
@@ -334,7 +347,7 @@
 			  	//Based on Type of Node Select Color
 			  	color = getColor(temp2);
 
-			  	//Set Type in the Node's type key
+				//Set Type in the Node's type key  
 			  	setNodeType(gc, temp2);
 
 			  	console.log("NODE: "+temp2);
@@ -370,10 +383,12 @@
 		  		nodes["node"+gc]["type"].push("QR");
 				let x_qr = parseInt(nodes["node"+gc]["x"]);
 				let y_qr = parseInt(nodes["node"+gc]["y"]);
-				let facing_degree = prompt("Enter Facing Degress: ","270");
+				var facing_degree = document.getElementById("qr-code-degree").value;
 
-				adjList[x_qr][y_qr] = facing_degree;
-				adjList[y_qr][x_qr] = facing_degree;
+				console.log(facing_degree);
+				console.log(gc);
+
+				adjList[gc][gc] = parseInt(facing_degree);
 		  	}else if(temp2=="2"){
 		  		nodes["node"+gc]["type"].push("Via");
 				nodes["node"+gc]["name"] = prompt("Enter the Via Point Name: ","Esclator");
@@ -465,12 +480,8 @@
 			res["building"] = building;
 			res["nodes"] = nodes;
 			res["adj_matrix"] = adjList;
-			res["ref_angle"] = document.getElementById("").value;
+			res["ref_angle"] = document.getElementById("ref-angle").value;
 			console.log(res);
-		}
-
-		function prepareAdjMatrix(){
-			
 		}	
 	</script>
 </body>

@@ -37,21 +37,21 @@
                                 <col width="10%">
                                 <col width="90%">
                                 <tr>
-                                    <td class="number">1</td>
+                                    <td class="number" id="inst-1">1</td>
                                     <td class="inst">
                                         Fill Basic Details
                                         &#10160;
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="number">2</td>
+                                    <td class="number" id="inst-2">2</td>
                                     <td class="inst">
                                         Create Map
                                         &#x1F4CD;
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="number">3</td>
+                                    <td class="number" id="inst-3">3</td>
                                     <td class="inst">
                                         Get & Print QR 
                                         <i class="fa fa-qrcode"></i>
@@ -82,18 +82,18 @@
                                         <col width="65%">
                                         <tr>
                                             <td class="input-label">Number </td>
-                                            <td><input type="text" class="br-inputs"></td>
+                                            <td><input type="text" class="br-inputs" required></td>
                                         </tr>
                                         <tr>
                                             <td class="input-label">Name </td>
-                                            <td><input type="text" class="br-inputs"></td>
+                                            <td><input type="text" class="br-inputs" required></td>
                                         </tr>
                                         <tr>
                                             <td class="input-label">Total Floors </td>
-                                            <td><input type="text" class="br-inputs"></td>
+                                            <td><input type="text" class="br-inputs" required></td>
                                         </tr>
                                     </table>
-                                    <input type="button" class="br-inputs-button" value="Register">
+                                    <input type="button" class="br-inputs-button" onclick="registerClick()" value="Register">
                                 </form>
                             </div>
                             <!----------------------------------------------------->
@@ -101,6 +101,22 @@
                             <!----------------------------------------------------->
                             <div class="map-build-section" id="map-build-section">
                                 <a href="map-builder.html">Open Map Builder</a>
+                                <input type="button" class="br-inputs-button" onclick="mapBuildClick()" value="Map Submitted">
+                            </div>
+                            <!----------------------------------------------------->
+
+                            <!----------------------------------------------------->
+                            <div class="qr-ack-section" id="qr-ack-section">
+                                <input type="button" value="Download QR Codes"  class="br-inputs-button" onclick="qrPrintClick();">
+                            </div>
+                            <!----------------------------------------------------->
+
+                            <!----------------------------------------------------->
+                            <div class="done-section" id="done-section">
+                                <!--<img src="images/done-building.png" class="done-img" alt="">-->
+                                &#10004;<br> 
+                                You're Done!<br>
+                                <b><i>Visitors can now comfortably route inside your building :)</i></b>
                             </div>
                             <!----------------------------------------------------->
                         </center>
@@ -122,8 +138,78 @@
             window.onscroll = function() {myFunction()};
             window.onload = function() {
                 document.getElementById("map-build-section").style.display = "none";
+                document.getElementById("qr-ack-section").style.display = "none";
+                document.getElementById("done-section").style.display = "none";
                 document.getElementById("section-title-id").innerHTML = "Fill Basic Details<hr>";
-            };
+
+                //Check Local Storage and Skip Steps
+                var x = localStorage.getItem("mapDone");
+
+                if(x=="true"){
+                    //reset it
+                    localStorage.setItem("mapDone","false")
+
+                    //skip steps
+                    registerClick();
+                    mapBuildClick();
+                }
+           };
+
+            function registerClick(){
+                // Submit to Server
+                //let res = call function;
+                let res=true;
+
+                // If Success then tick and Move to next step
+                if(res==true){
+                    // Mark as done
+                    markDone("inst-1");
+
+                    // Navigate to the next div
+                    hideAndShow("map-build-section", "basic-detail-section");
+
+                    // Change Title
+                    changeTitle("section-title-id", "Create Map");
+                }
+            }
+
+            function mapBuildClick(){
+                // Mark as done
+                markDone("inst-2");
+
+                // Navigate to the next div
+                hideAndShow("qr-ack-section", "map-build-section");
+
+                // Change Title
+                changeTitle("section-title-id", "Get the QR Codes");
+            }
+            
+            function qrPrintClick(){
+                // Mark as done
+                markDone("inst-3");
+
+                // Navigate to the next div
+                hideAndShow("done-section", "qr-ack-section");
+
+                // Change Title
+                changeTitle("section-title-id", "Done!");
+            }
+
+            function markDone(x){
+                // Change class of instruction 1 as DONE
+                document.getElementById(x).classList.add('number-done');
+                document.getElementById(x).classList.remove('number');
+                document.getElementById(x).innerHTML = "&#10004;";
+            }
+            
+            function hideAndShow(showThis, hideThis){
+                document.getElementById(hideThis).style.display = "none";
+                document.getElementById(showThis).style.display = "block";
+            }
+        
+            function changeTitle(id, titleStr){
+                document.getElementById(id).innerHTML = titleStr+"<hr>";
+            }
         </script>
 
     </body>
