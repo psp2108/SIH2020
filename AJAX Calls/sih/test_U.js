@@ -24,10 +24,10 @@ function step1_user(decode_qr){
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:3000/getBuilding/:123",
+        url: "https://28635f3f.ngrok.io/getBuilding/"+building_id,
         dataType: 'json',
         data:{
-            "building_id": building_id
+            //"building_id": building_id
         },
         success: function(data) {
             global_data=data;
