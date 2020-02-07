@@ -24,3 +24,12 @@
     display: none;
 }
 /* STEP 1 CSS--------------------------------*/
+
+.route-inst{
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 0;
+    background: aliceblue;
+    box-shadow: 2px 3px 0px 1px black;
+}

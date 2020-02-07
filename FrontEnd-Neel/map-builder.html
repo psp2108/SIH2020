@@ -12,28 +12,51 @@
 	<!-- GENERAL INCLUDES -->
 </head>
 <body>
-	<table id="map-table" border="1">
-		
-	</table>
-	<button class="br-inputs-button" onclick="connectNodes()">Connect Nodes</button>
-	<button class="br-inputs-button" onclick="preprocessJSON()">Save This</button>
-	<button class="br-inputs-button" onclick="backPressed();">Go Back</button>
-	<input type="text" id="Node1" placeholder="Node1">
-	<input type="text" id="Node2" placeholder="Node2">
-	<input type="text" id="qr-code-degree" placeholder="QR Code Degree">
-	<p id="qr-red-degree">
+	<center>
+		<!--Logo Bar Section Start-->
+        <div class="card top-bar" id="navbar">
+            <center>
+                <img src="images/favicon.png">
+                <h1>INA - Map Builder</h1>
+            </center>
+        </div>
+		<!--Logo Bar Section End--->
 
-	</p>
-	<div>
-		<input type="range" name="points" min="0" max="360" onchange="adjustArrow(this)" id="ref-angle">
-		<div id="points-demo">
+		<table id="map-table" border="1">
+			
+		</table>
+		<p style="color: red;">Please Fill Everything Carefully. And Fill Corresponding Feilds as per need.</p>
+		<button class="br-inputs-button" onclick="connectNodes()">Connect Nodes</button>
+		<button class="br-inputs-button" onclick="preprocessJSON()">Save This</button>
+		<button class="br-inputs-button" onclick="backPressed();">Go Back</button>
+		<input type="text" id="Node1" placeholder="Node1">
+		<input type="text" id="Node2" placeholder="Node2">
+		<input type="text" id="qr-code-degree" placeholder="QR Code Degree">
+		<input type="text" id="bldno" placeholder="Building Name">
+		<input type="text" id="floorno" placeholder="Floor Number">
+		<p id="qr-red-degree">
+
+		</p>
+		<div>
+			<input type="range" name="points" min="0" max="360" onchange="adjustArrow(this)" id="ref-angle" value="0" class="ref-angle-div">
+		</div>
+		<div id="points-demo" class="north-arrow">
 			<div>
 				<a href="#">
-				  <span class="left"><img src="images/north-compass.png" class="north-arrow"></span>
+				<span class="left"><img src="images/north-compass.png"></span>
 				</a>
-			  </div>
+			</div>
 		</div>
-	</div>
+	</center>
+
+	<!--Footer Section Start-->
+	<center>
+		<div class="card bottom-bar" id="bottombar">
+			<img src="images/favicon.png" style="margin-top: 5px;">
+		</div>
+	</center>
+	<!--Footer Section End--->
+
 	<script type="text/javascript">
 		function adjustArrow(x){
 			let o = document.getElementById("points-demo");
@@ -477,6 +500,8 @@
 			}
 			*/
 			let res = {};
+			building["no"] = document.getElementById("bldno").value;
+			building["floorno"] = document.getElementById("floorno").value;;
 			res["building"] = building;
 			res["nodes"] = nodes;
 			res["adj_matrix"] = adjList;

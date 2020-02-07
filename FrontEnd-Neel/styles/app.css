@@ -133,6 +133,7 @@
 input[type=text]{
     border: 0;
     border-radius: 10px;
+    display: block;
 }
 .br-inputs-button{
     display: block;
