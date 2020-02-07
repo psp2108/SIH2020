@@ -13,10 +13,15 @@ var port = process.env['SIH_PORT'] || 3000;
 
 var mongoHost = process.env['SIH_MONGODB_HOST'] || "localhost";
 var mongoPort = process.env['SIH_MONGODB_PORT'] || "27017";
-var mongoDB = process.env['SIH_MONGODB_DB'] || "sih2020";
+var mongoDB = process.env['SIH_MONGODB_DB'] || "sih2020_temp";
 var mongoURL = "mongodb://" + mongoHost + ":" + mongoPort + "/";
 
-var sizeHandler = function(n, len){var t = "" + n; while(t.length < len) t += '0' + t}
+var sizeHandler = function(n, len){
+    var t = "" + n; 
+    while(t.length < len) 
+        t = '0' + t; 
+    return t
+}
 
 MongoClient.connect(mongoURL + mongoDB, function(err, db) {
     if (err){ 
@@ -47,6 +52,7 @@ app.post('/registerBuilding', function(req, resp){
         'meta-data':{}
     };
     buildingData['meta-data'] = req.body;
+    buildingData['_id'] = req.body['registration-id'];
     buildingData['meta-data']["maps"] = {};
 
     var temp = {}
@@ -77,92 +83,71 @@ app.post('/registerBuilding', function(req, resp){
 });
 
 app.post('/registerBuilding/addDetails', function(req, resp){
-    /*
-    {
-        "meta-data" : {
-            "name" : "SAMPLE BUILDING NAME",
-            "registration-id" : 345234,
-            "total-floors" : 2,
-    
-            "maps" : {
-                "floor0" : {
-                    "file-path" : "location of .dwg or any map file"
-                },
-                "floor1" : {
-                    "file-path" : "location of .dwg or any map file"
-                } 
-            }
-        },
-    
-        "floor-destination" : {
-            "floor0" : {
-                "name" : "",
-                "destinations" : []
-            },
-            "floor1" : {
-                "name" : "",
-                "destinations" : []
-            }
-        },
-        
-        "source-node": []
-    };
-    */
-   var buildingData = {"_id":"5e3c6ad579daf34a40aa34f6","meta-data":{"name":"SAMPLE BUILDING NAME 2","registration-id":"000020","total-floors":2,"maps":{"floor0":{"file-path":"no-path"},"floor1":{"file-path":"no-path"}}},"floor-destination":{"floor0":{"name":"","destinations":[]},"floor1":{"name":"","destinations":[]}},"source-node":[]};
-    // var buildingData; //get from db
-    var obj = processMat.processMatrix(req.body);
-    var QR_counter = 0;
-    for(var i=0; i<obj.adj_matrix.length; i++){
-        if(obj.nodes['node' + i].type.indexOf("QR") >= 0){
-            var temp = {
-                "node" : i,
-                "qr-id" : obj.building.no + "-" + sizeHandler(obj.building.floorno, 2) + "-" + sizeHandler(QR_counter, 3),
-                "floor" : obj.building.floorno,
-                "path-table" : routeTable.getRoutingTable(obj.adj_matrix, i)
-            }
+    var buildingData;
+    MongoClient.connect(mongoURL, function(err, db) {
+        if (err){
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"})
+        }
+        var dbo = db.db(mongoDB);
+        // dbo.collection("buildings").find({"meta-data" : {"registration-id" : "00020"}}).toArray( function(err, res) {
+        dbo.collection("buildings").find({'_id' : req.body.building.no}).toArray( function(err, res) {
+            if (err) {
+                resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+            };
+            buildingData = res[0];
+            
+            var obj = processMat.processMatrix(req.body);
+            var QR_counter = 0;
+            for(var i=0; i<obj.adj_matrix.length; i++){
+                if(obj.nodes['node' + i].type.indexOf("QR") >= 0){
+                    var temp = {
+                        "node" : i,
+                        "qr-id" : obj.building.no + "-" + sizeHandler(obj.building.floorno, 2) + "-" + sizeHandler(QR_counter, 3),
+                        "floor" : obj.building.floorno,
+                        "path-table" : routeTable.getRoutingTable(obj.adj_matrix, i)
+                    }
 
-            buildingData['source-node'].push(temp);
-            QR_counter++;
-        }
-        else if(obj.nodes['node' + i].type.indexOf("Via") >= 0){
-            var temp = {
-                "name" : obj.nodes['node' + i].name,
-                "node" : i,
-                "type" : "via",
-                "direction" : "both"
+                    buildingData['source-node'].push(temp);
+                    QR_counter++;
+                }
+                else if(obj.nodes['node' + i].type.indexOf("Via") >= 0){
+                    var temp = {
+                        "name" : obj.nodes['node' + i].name,
+                        "node" : i,
+                        "type" : "via",
+                        "direction" : "both"
+                    }
+                    buildingData['floor-destination']['floor'+obj.building.floorno].destinations.push(temp);
+                }
+                else if(obj.nodes['node' + i].type.indexOf("Dest") >= 0){
+                    var temp = {
+                        "name" : obj.nodes['node' + i].name,
+                        "node" : i,
+                        "type" : "destination"
+                    }
+                    buildingData['floor-destination']['floor'+obj.building.floorno].destinations.push(temp);
+                }
             }
-            buildingData['floor-destination']['floor'+obj.building.floorno].push(temp);
-        }
-        else if(obj.nodes['node' + i].type.indexOf("Dest") >= 0){
-            var temp = {
-                "name" : obj.nodes['node' + i].name,
-                "node" : i,
-                "type" : "destination"
+            
+            for(var i=0; i<obj.adj_matrix.length; i++){
+                var temp = {};
+                for(var j=0; j<obj.adj_matrix.length; j++){
+                    if(obj.adj_matrix[i][j] != -1){
+                        temp[j] = obj.adj_matrix[i][j];
+                    }
+                }
+                buildingData['meta-data'].maps['floor'+obj.building.floorno][i] = temp;
             }
-            buildingData['floor-destination']['floor'+obj.building.floorno].push(temp);
-        }
-    }
-    
-    for(var i=0; i<obj.adj_matrix.length; i++){
-        var temp = {};
-        for(var j=0; j<obj.adj_matrix; j++){
-            if(obj.adj_matrix[i][j] != -1){
-                temp[j] = obj.adj_matrix[i][j];
-            }
-        }
-        buildingData['meta-data'].maps['floor'+obj.building.floorno][i] = temp;
-    }
-    // Iterate obj.nodes
-    // If QR push to source
-    //   -- node = current node
-    //   -- floor = obj.building.floorno
-    //   -- ['qr-id'] = obj.building.no + "-" + obj.building.floorno{2-digit} + "-" + QR_counter{3-digit}
-    //   -- ['path-table'] = getRoutingTable(obj['adj-matrix'], current node)
-    // If Dest or via push to destinations
-    //   -- Add direction to via, default 'both'
-    
-    resp.status(200).json(buildingData);
- 
+            
+            dbo.collection("buildings").updateOne({'_id' : req.body.building.no}, {$set: buildingData}, function(updateErr, updateRes) {
+                if (updateErr) {
+                    resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+                };
+                db.close();
+                resp.status(200).json({message : "Updated", status : "succeed"});
+            });
+        });
+    });
 });
 
 app.get('/getPdf/:id', function(req, res){
@@ -313,6 +298,28 @@ app.get('/getBuilding/:id', function(req, res){
     res.setHeader('content-type', 'application/json');
     res.status(200).json(data);
 });
+
+app.get('/g/:i', function(req, resp){
+    console.log(req.params.i);
+
+    MongoClient.connect(mongoURL, function(err, db) {
+        if (err){
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"})
+        }
+        var dbo = db.db(mongoDB);
+        // dbo.collection("buildings").find({"meta-data" : {"registration-id" : "00022"}}).toArray( function(err, res) {
+        dbo.collection("buildings").find({'_id' : req.params.i}).toArray( function(err, res) {
+          if (err) {
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+          };
+          db.close();
+          console.log("---------------")
+          console.log(res)
+          console.log("---------------")
+          resp.status(200).send(res);
+        });
+    });
+})
 
 // app.post('/regBuilding',function(req, res){
 
