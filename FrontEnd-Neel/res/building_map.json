@@ -1,43 +1,54 @@
 {
     "building":{
-        "no" : "",
-        "floorno" :""
+        "no" : "000020",
+        "floorno" :"0"
     },
     "nodes" : {
+        "node0": {
+            "x" : 28,
+            "y" : 50,
+            "type": ["QR", "Via"],
+            "name" : "Name of via"
+        },
         "node1": {
-            "x" : 12,
-            "y" : 23,
-            "type": ["QR"]
+            "x" : 45,
+            "y" : 50,
+            "type": ["Dest"],
+            "name" : "Name of destination"
         },
         "node2": {
-            "x" : 15,
-            "y" : 25,
-            "type": ["Path"]
+            "x" : 46,
+            "y" : 32,
+            "type": ["QR","Dest"],
+            "name" : "Name of destination"
         },
         "node3": {
-            "x" : 15,
-            "y" : 25,
+            "x" : 38,
+            "y" : 20,
             "type": ["Dest"],
             "name" : "Name of destination"
         },
         "node4": {
-            "x" : 15,
-            "y" : 25,
+            "x" : 37,
+            "y" : 37,
             "type": ["Via"],
             "name" : "Name of via"
+        },
+        "node5": {
+            "x" : 15,
+            "y" : 20,
+            "type": ["Dest"],
+            "name" : "Name of destination"
         }
     },
 
     "adj_matrix": [
-        [0,0,0,0],
-        [0,68,0,1],
-        [0,0,0,0],
-        [0,0,0,0]
+        [180,1,-1,-1,-1,1],
+        [1,-1,1,-1,1,-1],
+        [-1,1,296,1,-1,-1],
+        [-1,-1,1,-1,1,1],
+        [-1,1,-1,1,-1,-1],
+        [1,-1,-1,1,-1,-1]
     ],
-    "ref_angle":45
+    "ref_angle":64
 }
-
--------------------------------------------
-
-QR | Via | Path | Dest
-

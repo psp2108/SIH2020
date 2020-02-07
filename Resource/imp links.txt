@@ -10,3 +10,7 @@ https://github.com/LazarSoft/jsqrcode
 
 Mongo DB
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+
+TEXT-2-PNG and PNG-2-PDF
+https://www.npmjs.com/package/images-to-pdf
+https://www.npmjs.com/package/text2png
