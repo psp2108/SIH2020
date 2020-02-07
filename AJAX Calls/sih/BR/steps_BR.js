@@ -6,19 +6,19 @@ script.crossorigin = 'anonymous';
 document.head.appendChild(script);
 var no_of_floors;
 
-function step1(name="SAMPLE BUILDING NAME",registration_id = "345234",total_floors = "2"){
+function step1(b_name="SAMPLE BUILDING NAME",registration_id = "345234",total_floors = "2"){
         no_of_floors = total_floors;
         $.ajax({
             type: "GET",
             url: "/registerBuilding",
             dataType: 'json',
             data: {
-                "name" : name,
+            "b_name" : b_name,
             "registration-id" : registration_id,
             "total-floors" : total_floors,
             },
             success: function(data) {
-                
+                console.log(b_name,registration_id ,total_floors);
             },
             error: function (result) {
                 console.log(result);
@@ -63,7 +63,7 @@ function step2(build_no,floor_no,node1_x,node1_y,type1,node2_x,node2_y,type2,adj
             },
 
             success: function(data) {
-            
+                console.log(build_no,floor_no,node1_x,node1_y,type1,node2_x,node2_y,type2,adj_matrix,ref_angle);
             },
             error: function (result) {
                 console.log(result);
@@ -71,6 +71,7 @@ function step2(build_no,floor_no,node1_x,node1_y,type1,node2_x,node2_y,type2,adj
         });
     
 }
-
+step1(b_name="SAMPLE BUILDING NAME",registration_id = "345234",total_floors = "2");
+//function step2(build_no,floor_no,node1_x,node1_y,type1,node2_x,node2_y,type2,adj_matrix,ref_angle);
 
 
