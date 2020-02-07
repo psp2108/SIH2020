@@ -1,7 +1,6 @@
 script = document.createElement('script');
 script.type = 'text/javascript';
 script.src = 'https://code.jquery.com/jquery-3.4.1.js';
-
 script.crossorigin = 'anonymous';
 document.head.appendChild(script);
 var no_of_floors;
