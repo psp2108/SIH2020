@@ -2,10 +2,15 @@ require("dotenv").config();
 
 var processMat = require('./dependent/PreProcessMatrix')
 var routeTable = require('./dependent/RoutingTable')
+var qrPreProcess = require('./dependent/PreProcessQR')
 
 var MongoClient = require('mongodb').MongoClient;
 const express = require('express');
+var QRCode = require('qrcode');
+var async = require('async');
 const bodyParser = require('body-parser');
+var fs = require('fs');
+
 const app = express();
 const router = express.Router();
 
@@ -23,6 +28,24 @@ var sizeHandler = function(n, len){
     return t
 }
 
+var generateQR = function(file, data, done){
+    return QRCode.toFile(file, [{ data: data, mode: 'byte'}], {
+        color: {
+            dark: '#000000',  // Blue dots
+            light: '#ffffff' // Transparent background
+        }
+    }, function (err) {
+        if (err){
+            return done(err, null);
+        }
+        else{
+            // QRList.push(eachQR['qr-id']);
+            // console.log(eachQR['qr-id'])
+            return done(false, true);
+        }
+    });
+}
+
 MongoClient.connect(mongoURL + mongoDB, function(err, db) {
     if (err){ 
         console.log("Failed to connect to database");
@@ -35,7 +58,7 @@ MongoClient.connect(mongoURL + mongoDB, function(err, db) {
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
 // Configuring body parser middleware
@@ -43,11 +66,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-    console.log(req);
-    res.send('hello world');
+    var a = [
+        " (GET)   \t/",
+        "(POST)   \t/registerBuilding",
+        "(POST)   \t/registerBuilding/addDetails",
+        " (GET)   \t/getPdf/:id",
+        " (GET)   \t/getBuilding/:id",
+        " (GET)   \t/getBuilding"
+    ];
+    var op = "";
+    a.forEach(function(r){
+        op += (r + "<br>\n");
+    });
+
+    console.log(op);
+    res.send(op);
 });
 
 app.post('/registerBuilding', function(req, resp){
+    console.log(req.body);
+    console.log(req.body.name);
     var buildingData = {
         'meta-data':{}
     };
@@ -118,6 +156,15 @@ app.post('/registerBuilding/addDetails', function(req, resp){
                         "direction" : "both"
                     }
                     buildingData['floor-destination']['floor'+obj.building.floorno].destinations.push(temp);
+
+                    temp = {
+                        "node" : i,
+                        "qr-id" : "",
+                        "floor" : obj.building.floorno,
+                        "path-table" : routeTable.getRoutingTable(obj.adj_matrix, i)
+                    }
+
+                    buildingData['source-node'].push(temp);
                 }
                 else if(obj.nodes['node' + i].type.indexOf("Dest") >= 0){
                     var temp = {
@@ -168,6 +215,21 @@ app.get('/getBuilding/:id', function(req, resp){
           };
           db.close();
           resp.status(200).send(res[0]);
+        });
+    });
+});
+app.get('/getBuilding', function(req, resp){
+    MongoClient.connect(mongoURL, function(err, db) {
+        if (err){
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"})
+        }
+        var dbo = db.db(mongoDB);
+        dbo.collection("buildings").find({}).toArray( function(err, res) {
+          if (err) {
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+          };
+          db.close();
+          resp.status(200).send(res);
         });
     });
 });
