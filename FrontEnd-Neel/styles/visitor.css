@@ -2,16 +2,6 @@
 
 /* GENERAL ----------------------------------*/
 
-/* INSTR STATUS -----------------------------*/
-.number-done{
-    text-align: center;
-    color: white;
-    border-radius: 100px;
-    background: #11998e;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
 /* STEP 1 CSS--------------------------------*/
 .qr-scanner{
     border: 1px;
@@ -34,3 +24,12 @@
     display: none;
 }
 /* STEP 1 CSS--------------------------------*/
+
+.route-inst{
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 0;
+    background: aliceblue;
+    box-shadow: 2px 3px 0px 1px black;
+}

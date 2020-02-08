@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>INA &#8627; Home</title>
+        <title>INA &#8627; Visitor</title>
         <!-- GENERAL INCLUDES -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +9,15 @@
         <link rel="stylesheet" href="styles/app.css">
         <link rel="stylesheet" href="styles/visitor.css">
         <script type="text/javascript" src="scripts/sticky.js"></script>
+        <script type="text/javascript" src="scripts/app.js"></script>
         <script type="text/javascript" src="scripts/visitor/my_qrcode.js"></script>
         <!-- GENERAL INCLUDES -->
+
+        <!-- AJAX INCLUDES -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        
+
+        <!-- AJAX INCLUDES -->
     </head>
     <body>
 
@@ -38,21 +45,21 @@
                                 <col width="10%">
                                 <col width="90%">
                                 <tr>
-                                    <td class="number" id="scan-qr-inst-id">1</td>
+                                    <td class="number" id="inst-1">1</td>
                                     <td class="inst">
                                         Scan QR Code
                                         <i class="fa fa-qrcode"></i>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="number">2</td>
+                                    <td class="number" id="inst-2">2</td>
                                     <td class="inst">
                                         Select Destination
                                         &#x1F4CD;
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="number">3</td>
+                                    <td class="number" id="inst-3">3</td>
                                     <td class="inst">
                                         Route
                                         &#10160;
@@ -69,7 +76,7 @@
         <!--Dynamic Section Start-->
         <div class="card dynamic-section">
             <table border="0">
-                <tr class="section-title">
+                <tr class="section-title" class="section-title-id">
                     <td id="section-title-id">Scan QR Code<hr></td>
                 </tr>
                 <tr class="section-body" id="section-body-id">
@@ -86,9 +93,20 @@
 
                             <!--Destination Selection Screen-->
                             <div class="dest-selection" id="dest-selection-id">
-                                Dest Selection
+                                <select name="" id="dest" class="br-inputs">
+                                    <option value="op1">op1</option>
+                                </select>
+                                <input type="button"class="br-inputs-button" value="Select" onclick="destinationSelected();">
                             </div>
                             <!--Destination Selection Screen-->
+
+                            <!--Routing Screen-->
+                            <div class="routing" id="routing-id">
+                                <font class="route-inst" id="route-inst">Route Goes Here</font>
+                                <input type="button"class="br-inputs-button" value="Next" onclick="routingNext();">
+                                <input type="button"class="br-inputs-button" value="Quit" onclick="routingDone();">
+                            </div>
+                            <!--Routing Screen-->
                         </center>
                     </td>
                 </tr>
@@ -106,6 +124,76 @@
 
         <script>
             window.onscroll = function() {myFunction()};
+            document.getElementById("dest-selection-id").style.display = "none";
+            document.getElementById("routing-id").style.display = "none";
+            document.getElementById("section-title-id").innerHTML = "Scan QR Code<hr>";
+
+            function handle_qr_callback(result){
+                //LINE TO SHOW QR CODE :: document.getElementById("dest-selection-id").innerHTML = result;
+                
+                //---------------------------------------------------------------later create separate function
+                var str = result;
+                var bytes = []; // char codes
+                var bytesv2 = []; // char codes
+
+                for (var i = 0; i < str.length; ++i) {
+                var code = str.charCodeAt(i);
+                
+                bytes = bytes.concat([code]);
+                
+                bytesv2 = bytesv2.concat([code & 0xff, code / 256 >>> 0]); //Adds 0s in Between
+                }
+
+                // 72, 101, 108, 108, 111, 31452
+                console.log('bytes', bytes.join(', '));
+
+                // 72, 0, 101, 0, 108, 0, 108, 0, 111, 0, 220, 122
+                console.log('bytesv2', bytesv2.join(', '));
+                //---------------------------------------------------------------later create separate function
+
+                // Send to AJAX----------------------------------------------
+                // ----------------------------------------------------------
+
+                qrOutput();
+            }
+
+            function qrOutput(){
+                //document.getElementById("qr-scanner-id").innerHTML = result;
+                
+                // AJAX: GIVE TO AJAX FOR ROUTING
+
+                // Mark as done
+                markDone("inst-1");
+
+                // Navigate to the next div
+                hideAndShow("dest-selection-id", "qr-scanner-id");
+
+                // Change Title
+                changeTitle("section-title-id", "Select Destination");
+            }
+
+            function destinationSelected(){
+                //document.getElementById("qr-scanner-id").innerHTML = result;
+
+                // AJAX: GIVE TO AJAX FOR ROUTING
+
+                // Mark as done
+                markDone("inst-2");
+
+                // Navigate to the next div
+                hideAndShow("routing-id", "dest-selection-id");
+
+                // Change Title
+                changeTitle("section-title-id", "Follow the Route");
+            }
+
+            function routingDone(){
+                // Mark as done
+                markDone("inst-3");
+
+                // Show Ack
+                document.getElementById("routing-id").innerHTML = "<b><i>Thank you for making us a part of your journey :)</i></b>";
+            }
         </script>
     </body>
 </html>

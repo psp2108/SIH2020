@@ -61,19 +61,3 @@ function tick() {
     if (!video.classList.contains("hidden"))
         setTimeout(tick, 100);
 }
-
-function handle_qr_callback(result){
-    // Taking Actions on the Successful Scan
-    document.getElementById("qr-scanner-id").innerHTML = result;
-    document.getElementById("scan-qr-inst-id").innerHTML = "&#10004;";
-    
-    // Change class of instruction 1 as DONE
-    document.getElementById("scan-qr-inst-id").classList.add('number-done');
-    document.getElementById("scan-qr-inst-id").classList.remove('number');
-    
-    // Navigate to the next div
-    document.getElementById("qr-scanner-id").style.display = "none";
-    document.getElementById("dest-selection-id").style.display = "block";
-    document.getElementById("section-title-id").innerHTML = "Select Destination"+"<hr>";
-    
-}
