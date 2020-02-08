@@ -197,9 +197,57 @@ app.post('/registerBuilding/addDetails', function(req, resp){
     });
 });
 
-app.get('/getPdf/:id', function(req, res){
-    const file = `${__dirname}/sample_files/QRs.pdf`;
-    res.download(file); // Set disposition and send it.
+app.get('/getPdf/:id', function(req, resp){
+
+    var QR_Dir = './QRs';
+    var QRList = [];
+
+    if (!fs.existsSync(QR_Dir)){
+        fs.mkdirSync(QR_Dir);
+    }
+
+
+    MongoClient.connect(mongoURL, function(err, db) {
+        if (err){
+            resp.status(200).json({message : "Error: DB not connecting", status : "failed"})
+        }
+        var dbo = db.db(mongoDB);
+        // dbo.collection("buildings").find({"meta-data" : {"registration-id" : "00022"}}).toArray( function(err, res) {
+        dbo.collection("buildings").find({'_id' : req.params.id}).toArray( function(err, res) {
+            if (err) {
+                resp.status(200).json({message : "Error: DB not connecting", status : "failed"});
+            };
+            db.close();
+
+            var kundali = res[0]
+            var QRGenerateTask = [];
+            kundali['source-node'].forEach(function(eachQR){
+                if(eachQR['qr-id'] != ""){
+                    if(QRList.indexOf(eachQR['qr-id']) < 0){
+                        // QRList.push(eachQR['qr-id']);
+                        var data = qrPreProcess.preEncode(eachQR); // Get it from preEncode
+
+                        QRList.push(eachQR['qr-id']);
+                        QRGenerateTask.push(function(_cb) {
+                            return generateQR(QR_Dir + '/'+ eachQR['qr-id'] +'.png',data,_cb);
+                        });
+                    }
+                }
+            });
+            async.series(QRGenerateTask, function(error, response){
+                if(error) {
+                    resp.status(200).json({message : "QR Generation failed", status : "failed"});
+                }
+                else{
+            
+                    const file = `${__dirname}/${QR_Dir}/${QRList[0]}.png`;
+                    // resp.download(file); // Set disposition and send it.
+                    resp.status(200).json({t: QRList}); // Set disposition and send it.
+        
+                }
+            });
+        });
+    });
 });
 
 app.get('/getBuilding/:id', function(req, resp){
