@@ -221,6 +221,7 @@ app.get('/getPdf/:id', function(req, resp){
 
             var kundali = res[0]
             var QRGenerateTask = [];
+            
             kundali['source-node'].forEach(function(eachQR){
                 if(eachQR['qr-id'] != ""){
                     if(QRList.indexOf(eachQR['qr-id']) < 0){
@@ -228,24 +229,26 @@ app.get('/getPdf/:id', function(req, resp){
                         var data = qrPreProcess.preEncode(eachQR); // Get it from preEncode
 
                         QRList.push(eachQR['qr-id']);
-                        QRGenerateTask.push(function(_cb) {
-                            return generateQR(QR_Dir + '/'+ eachQR['qr-id'] +'.png',data,_cb);
+                        QRGenerateTask.push(function(_cb){
+                            return generateQR(QR_Dir + '/'+ eachQR['qr-id'] +'.png',data, _cb);
                         });
                     }
-                }
+                }              
             });
             async.series(QRGenerateTask, function(error, response){
                 if(error) {
                     resp.status(200).json({message : "QR Generation failed", status : "failed"});
                 }
                 else{
-            
-                    const file = `${__dirname}/${QR_Dir}/${QRList[0]}.png`;
+                    console.log(QRList)
+                    // const file = `${__dirname}/${QR_Dir}/${QRList[0]}.png`;
                     // resp.download(file); // Set disposition and send it.
                     resp.status(200).json({t: QRList}); // Set disposition and send it.
-        
+                    // resp.send(QRList);
                 }
             });
+            
+            
         });
     });
 });
@@ -266,6 +269,7 @@ app.get('/getBuilding/:id', function(req, resp){
         });
     });
 });
+
 app.get('/getBuilding', function(req, resp){
     MongoClient.connect(mongoURL, function(err, db) {
         if (err){
