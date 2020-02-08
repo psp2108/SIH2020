@@ -8,8 +8,10 @@ var MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 var QRCode = require('qrcode');
 var async = require('async');
+const imagesToPdf = require("images-to-pdf")
 const bodyParser = require('body-parser');
 var fs = require('fs');
+var text2png = require('text2png');
 
 const app = express();
 const router = express.Router();
@@ -36,12 +38,12 @@ var generateQR = function(file, data, done){
         }
     }, function (err) {
         if (err){
-            return done(err, null);
+            return (done == null) ? false : done(err, null);
         }
         else{
             // QRList.push(eachQR['qr-id']);
             // console.log(eachQR['qr-id'])
-            return done(false, true);
+            return (done == null) ? true : done(err, null);
         }
     });
 }
@@ -221,37 +223,61 @@ app.get('/getPdf/:id', function(req, resp){
 
             var kundali = res[0]
             var QRGenerateTask = [];
-            
+            var qrpath = "";
+
             kundali['source-node'].forEach(function(eachQR){
                 if(eachQR['qr-id'] != ""){
-                    if(QRList.indexOf(eachQR['qr-id']) < 0){
+                    qrpath = QR_Dir + '/'+ eachQR['qr-id'] + '-label.png';
+                    if(QRList.indexOf(qrpath) < 0){
                         // QRList.push(eachQR['qr-id']);
                         var data = qrPreProcess.preEncode(eachQR); // Get it from preEncode
+                        
+                        QRList.push(qrpath);
+                        fs.writeFileSync(qrpath, text2png('QR ID\n' + eachQR['qr-id'], {color: 'blue'}));
+                        qrpath = QR_Dir + '/'+ eachQR['qr-id'] +'.png';
+                        QRList.push(qrpath);
 
-                        QRList.push(eachQR['qr-id']);
-                        QRGenerateTask.push(function(_cb){
-                            return generateQR(QR_Dir + '/'+ eachQR['qr-id'] +'.png',data, _cb);
-                        });
+                        // QRGenerateTask.push(function(_cb){
+                            // return generateQR(QR_Dir + '/'+ eachQR['qr-id'] +'.png',data, _cb);
+                            generateQR(qrpath,data, null);
+                        // });
                     }
                 }              
             });
-            async.series(QRGenerateTask, function(error, response){
-                if(error) {
-                    resp.status(200).json({message : "QR Generation failed", status : "failed"});
-                }
-                else{
-                    console.log(QRList)
-                    // const file = `${__dirname}/${QR_Dir}/${QRList[0]}.png`;
-                    // resp.download(file); // Set disposition and send it.
-                    resp.status(200).json({t: QRList}); // Set disposition and send it.
-                    // resp.send(QRList);
-                }
-            });
-            
-            
+            // async.series(QRGenerateTask, function(error, response){
+            //     if(error) {
+            //         resp.status(200).json({message : "QR Generation failed", status : "failed"});
+            //     }
+            //     else{
+            //         console.log(QRList)
+            //         // const file = `${__dirname}/${QR_Dir}/${QRList[0]}.png`;
+            //         // resp.download(file); // Set disposition and send it.
+            //         resp.status(200).json({t: QRList}); // Set disposition and send it.
+            //         // resp.send(QRList);
+            //     }
+            // });
+
+            // imagesToPdf(QRList, "combined.pdf")
+            resp.status(200).json({t: QRList}); // Set disposition and send it.
         });
     });
 });
+
+app.get('/downloadPDF', function(req, res){
+    var qr = [
+        "./QRs/00050-01-000-label.png",
+        "./QRs/00050-01-000.png",
+        "./QRs/00050-01-001-label.png",
+        "./QRs/00050-01-001.png",
+        "./QRs/00050-00-000-label.png",
+        "./QRs/00050-00-000.png",
+        "./QRs/00050-00-001-label.png",
+        "./QRs/00050-00-001.png"
+    ]
+    imagesToPdf(qr, "combined.pdf")  
+    const file = `${__dirname}/combined.pdf`;
+    res.download(file); 
+})
 
 app.get('/getBuilding/:id', function(req, resp){
     MongoClient.connect(mongoURL, function(err, db) {
