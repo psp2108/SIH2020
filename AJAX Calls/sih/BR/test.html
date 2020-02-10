@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <script src="BR/steps_BR.js">
+
+        </script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <script>
+            floor_vise_ditails={
+                "building":{
+                    "no" : "34524",
+                    "floorno" :"0"
+                },
+                "nodes" : {
+                    "node1": {
+                        "x" : 12,
+                        "y" : 23,
+                        "type": ["QR"]
+                    },
+                    "node2": {
+                        "x" : 15,
+                        "y" : 25,
+                        "type": ["Path"]
+                    },
+                    "node3": {
+                        "x" : 15,
+                        "y" : 25,
+                        "type": ["Dest"],
+                        "name" : "Name of destination"
+                    },
+                    "node4": {
+                        "x" : 15,
+                        "y" : 25,
+                        "type": ["Via"],
+                        "name" : "Name of via"
+                    }
+                },
+
+                "adj_matrix": [
+                    [0,0,0,0],
+                    [0,68,0,1],
+                    [0,0,0,0],
+                    [0,0,0,0]
+                ],
+                "ref_angle":45
+            }
+             step1_br();
+
+            step2_br(floor_vise_ditails);
+            //step2(,floor_no,node1_x,node1_y,type1,node2_x,node2_y,type2,adj_matrix,ref_angle);
+        </script>
+    </body>>
+</html>>

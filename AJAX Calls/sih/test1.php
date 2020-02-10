@@ -1,10 +1,8 @@
 <?php 
     echo"Hello";
 ?>
-
 <html>
 <head>
-    
     <script src="JS_functions_dir_ret.js"></script>
     <script src="JS_functions_filter_dest.js"></script>
     <script src="clean.js"></script>
@@ -19,7 +17,7 @@
 function sendQR()
 {
     var binStrin = "00110000001100000011010000110100001101010010110100110000001100100010110100110000001100000011001000000000010000000001000000001100000000100000000100000000001100000001010000000100000000000000000001010000000101000000011000111010101000000000001111101111111111111111111111000000000100000000000000000000";
-    //var clean_data=cl(binStrin);
+    // var clean_data=cl(binStrin);
     // var building_id=clean_data["building-id"];
     // var qr_id=clean_data["qr-id"];
     // var route_table=clean_data["path-table"];

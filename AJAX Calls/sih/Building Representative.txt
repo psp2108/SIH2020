@@ -1,0 +1,12 @@
+Building Representative:
+
+s1: step1_br(b_name="SAMPLE BUILDING NAME",registration_id = "34524",total_floors = "2")
+
+s2: step2_br(floor_vise_ditails)
+
+User:
+
+s1: step1_user(decode_qr) [returns dest_list] 
+
+s2: step2_user(d_floor_no,d_node_no)
+
