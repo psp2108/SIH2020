@@ -223,19 +223,19 @@ app.get('/getPdf/:id', function(req, resp){
 
             var kundali = res[0]
             var QRGenerateTask = [];
-            var qrpath = "";
+            var qrlabelpath = "";
 
             kundali['source-node'].forEach(function(eachQR){
                 if(eachQR['qr-id'] != ""){
-                    qrpath = QR_Dir + '/'+ eachQR['qr-id'] + '-label.png';
-                    if(QRList.indexOf(qrpath) < 0){
+                    qrlabelpath = QR_Dir + '/'+ eachQR['qr-id'] + '-label.png';
+                    if(QRList.indexOf(qrlabelpath) < 0){
                         // QRList.push(eachQR['qr-id']);
                         var data = qrPreProcess.preEncode(eachQR); // Get it from preEncode
                         
-                        QRList.push(qrpath);
-                        console.log("LABEL Path -> " + qrpath)
-                        fs.writeFileSync(qrpath, text2png('QR ID\n' + eachQR['qr-id'], {color: 'blue'}));
-                        qrpath = QR_Dir + '/'+ eachQR['qr-id'] +'.png';
+                        QRList.push(qrlabelpath);
+                        console.log("LABEL Path -> " + qrlabelpath)
+                        fs.writeFileSync(qrlabelpath, text2png('QR ID\n' + eachQR['qr-id'], {color: 'blue'}));
+                        var qrpath = QR_Dir + '/'+ eachQR['qr-id'] +'.png';
                         QRList.push(qrpath);
                         QRGenerateTask.push(function(done){
                             console.log("QR Path -> " + qrpath);
@@ -250,7 +250,6 @@ app.get('/getPdf/:id', function(req, resp){
                 }              
             });
             async.parallel(QRGenerateTask, function(error, response){
-                console.log(error, response)
                 if(error) {
                     resp.status(200).json({message : "QR Generation failed", status : "failed"});
                 }
