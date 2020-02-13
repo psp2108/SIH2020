@@ -236,29 +236,34 @@ app.get('/getPdf/:id', function(req, resp){
                         fs.writeFileSync(qrpath, text2png('QR ID\n' + eachQR['qr-id'], {color: 'blue'}));
                         qrpath = QR_Dir + '/'+ eachQR['qr-id'] +'.png';
                         QRList.push(qrpath);
-
-                        // QRGenerateTask.push(function(_cb){
-                            // return generateQR(QR_Dir + '/'+ eachQR['qr-id'] +'.png',data, _cb);
-                            generateQR(qrpath,data, null);
-                        // });
+                        QRGenerateTask.push(function(done){
+                            return QRCode.toFile(qrpath, [{ data: data, mode: 'byte'}], {
+                                color: {
+                                    dark: '#000000',  // Blue dots
+                                    light: '#ffffff' // Transparent background
+                                }
+                            }, done);   
+                        });
                     }
                 }              
             });
-            // async.series(QRGenerateTask, function(error, response){
-            //     if(error) {
-            //         resp.status(200).json({message : "QR Generation failed", status : "failed"});
-            //     }
-            //     else{
-            //         console.log(QRList)
-            //         // const file = `${__dirname}/${QR_Dir}/${QRList[0]}.png`;
-            //         // resp.download(file); // Set disposition and send it.
-            //         resp.status(200).json({t: QRList}); // Set disposition and send it.
-            //         // resp.send(QRList);
-            //     }
-            // });
-
-            // imagesToPdf(QRList, "combined.pdf")
-            resp.status(200).json({t: QRList}); // Set disposition and send it.
+            async.parallel(QRGenerateTask, function(error, response){
+                console.log(error, response)
+                if(error) {
+                    resp.status(200).json({message : "QR Generation failed", status : "failed"});
+                }
+                else{
+                    console.log(QRList)
+                    
+                    imagesToPdf(QRList, "combined.pdf")  
+                    const file = `${__dirname}/combined.pdf`;
+                    res.download(file); 
+                    // resp.status(200).json({t: QRList}); // Set disposition and send it.
+                    // resp.send(QRList);
+                }
+            });
+            
+            
         });
     });
 });
