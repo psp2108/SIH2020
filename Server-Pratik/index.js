@@ -201,7 +201,7 @@ app.post('/registerBuilding/addDetails', function(req, resp){
 
 app.get('/getPdf/:id', function(req, resp){
 
-    var QR_Dir = './QRs';
+    var QR_Dir = __dirname + '/QRs';
     var QRList = [];
 
     if (!fs.existsSync(QR_Dir)){
@@ -233,10 +233,12 @@ app.get('/getPdf/:id', function(req, resp){
                         var data = qrPreProcess.preEncode(eachQR); // Get it from preEncode
                         
                         QRList.push(qrpath);
+                        console.log("LABEL Path -> " + qrpath)
                         fs.writeFileSync(qrpath, text2png('QR ID\n' + eachQR['qr-id'], {color: 'blue'}));
                         qrpath = QR_Dir + '/'+ eachQR['qr-id'] +'.png';
                         QRList.push(qrpath);
                         QRGenerateTask.push(function(done){
+                            console.log("QR Path -> " + qrpath);
                             return QRCode.toFile(qrpath, [{ data: data, mode: 'byte'}], {
                                 color: {
                                     dark: '#000000',  // Blue dots
@@ -257,7 +259,7 @@ app.get('/getPdf/:id', function(req, resp){
                     
                     imagesToPdf(QRList, "combined.pdf")  
                     const file = `${__dirname}/combined.pdf`;
-                    res.download(file); 
+                    resp.download(file); 
                     // resp.status(200).json({t: QRList}); // Set disposition and send it.
                     // resp.send(QRList);
                 }
