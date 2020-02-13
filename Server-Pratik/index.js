@@ -257,8 +257,8 @@ app.get('/getPdf/:id', function(req, resp){
                 else{
                     console.log(QRList)
                     
-                    imagesToPdf(QRList, "combined.pdf")  
-                    const file = `${__dirname}/combined.pdf`;
+                    const file = `${QR_Dir}/combined.pdf`;
+                    imagesToPdf(QRList, file)  
                     resp.download(file); 
                     // resp.status(200).json({t: QRList}); // Set disposition and send it.
                     // resp.send(QRList);
